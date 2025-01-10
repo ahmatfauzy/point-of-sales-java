@@ -74,6 +74,8 @@ public class TambahProduk1 extends javax.swing.JDialog {
         btnBatal = new rojeru_san.complementos.RSButtonHover();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        lblInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -89,7 +91,7 @@ public class TambahProduk1 extends javax.swing.JDialog {
                 txtNamaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 90, 30));
+        jPanel1.add(txtNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 100, 30));
 
         jLabel4.setText("Kode Produk");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 80, 20));
@@ -125,13 +127,13 @@ public class TambahProduk1 extends javax.swing.JDialog {
         jLabel8.setText("Produk Supplier");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 100, 40));
 
-        jButton1.setText("Pilih");
+        jButton1.setText("Generate");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 60, 30));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 80, 30));
 
         txtNama6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,6 +199,20 @@ public class TambahProduk1 extends javax.swing.JDialog {
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 680, 10));
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 490, 70, 20));
 
+        jButton2.setText("Pilih");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 60, 30));
+
+        lblInfo.setBackground(new java.awt.Color(153, 255, 153));
+        lblInfo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblInfo.setForeground(new java.awt.Color(255, 51, 51));
+        lblInfo.setOpaque(true);
+        jPanel1.add(lblInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 390, 220, 30));
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -216,6 +232,24 @@ public class TambahProduk1 extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        long R10 = (long) (Math.random() * 9000000000L) + 1000000000L;
+        txtNama.setText("" + R10);
+
+        
+        try {
+            Connection K = Koneksi.Go();
+            Statement S = K.createStatement();
+            String Q = "SELECT produk_kode FROM produk WHERE produk_kode='"+R10+"'";
+            ResultSet R = S.executeQuery(Q);
+            boolean ada = R.next();
+            if(ada){
+                updateInfo(true,"Kode Sudah Ada"); 
+            }else {
+                updateInfo(false, "Kode Telah Dibuat");
+            }
+        } catch (Exception e) {
+            
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNama6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNama6ActionPerformed
@@ -302,6 +336,10 @@ public class TambahProduk1 extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -347,6 +385,7 @@ public class TambahProduk1 extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojeru_san.complementos.RSButtonHover btnBatal;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -362,6 +401,7 @@ public class TambahProduk1 extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblInfo;
     private rojeru_san.complementos.RSButtonHover rSButtonHover1;
     public static javax.swing.JTextField txtNama;
     private javax.swing.JTextField txtNama2;
@@ -372,24 +412,72 @@ public class TambahProduk1 extends javax.swing.JDialog {
     private javax.swing.JTextField txtNama7;
     // End of variables declaration//GEN-END:variables
 
-private void viewCategory(String tableName, JComboBox cmb){
-    try {
-        cmb.removeAllItems();
-        Connection K = Koneksi.Go();
+    private void viewCategory(String tableName, JComboBox cmb) {
+        try {
+            cmb.removeAllItems();
+            Connection K = Koneksi.Go();
             Statement S = K.createStatement();
-            String Q = "SELECT * FROM "+tableName;
+            String Q = "SELECT * FROM " + tableName;
             ResultSet R = S.executeQuery(Q);
 //            int n = 1;
-            while (R.next()) {                 
-                int id = R.getInt("ID");                 	 	 	 	 	 	 	 	
+            while (R.next()) {
+                int id = R.getInt("ID");
                 String name = R.getString("nama");
 //                String desc = R.getString("description");
-                cmb.addItem(id+"-"+name);                 
+                cmb.addItem(id + "-" + name);
             }
-    } catch (SQLException e) {
-        System.err.println("ErrorCode: 1123"+e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("ErrorCode: 1123" + e.getMessage());
+        }
     }
-}
+
+    private void updateInfo(boolean b, String text) {
+        if (b) {
+            lblInfo.setBackground(new java.awt.Color(153, 255, 153));
+            lblInfo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+            lblInfo.setForeground(new java.awt.Color(255, 51, 51));
+            lblInfo.setText(text);
+            lblInfo.setOpaque(true);
+        } else {
+            lblInfo.setBackground(new java.awt.Color(242, 242, 242));
+            //lblInfo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+            //lblInfo.setForeground(new java.awt.Color(255, 51, 51));
+            lblInfo.setText(text);
+            lblInfo.setOpaque(false);
+        }
+    }
+
+    private void generateCode() {
+        try {
+            Connection K = Koneksi.Go();
+            String Q = "SELECT produk_kode AS kode FROM produk ORDER BY ID DESC LIMIT 1;";
+            Statement ST = K.createStatement();
+            ResultSet R = ST.executeQuery(Q);
+            String kode = "";
+            while (R.next()) {
+                kode = R.getString("kode");
+            }
+
+            int P = Integer.parseInt(kode.substring(1));
+            String newCode = "";
+            if (P < 10) {
+                newCode = "P0000" + (P + 1);
+            } else if (P > 9 && P < 100) {
+                newCode = "P000" + (P + 1);
+            } else if (P > 99 && P < 1000) {
+                newCode = "P00" + (P + 1);
+            } else if (P > 999 && P < 10000) {
+                newCode = "P0" + (P + 1);
+            } else if (P > 9999 && P < 10000) {
+                newCode = "P" + (P + 1);
+            }
+            txtNama.setText(newCode);
+
+        } catch (Exception e) {
+        }
+
+    }
+
 
 
 }

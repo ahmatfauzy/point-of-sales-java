@@ -6,10 +6,13 @@ package Kasir;
 
 import Kasir.homeKasir;
 import UILogin.Koneksi;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
@@ -53,23 +56,17 @@ public class inputKasir extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lblTotalHarga = new javax.swing.JLabel();
+        uangPembayaran = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        uangPembayaran1 = new javax.swing.JLabel();
+        lblKembalian = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         TAMBAHAN = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         btnHapus = new rojeru_san.complementos.RSButtonHover();
-        pnlNota = new javax.swing.JPanel();
-        headerNota = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblNota = new javax.swing.JTable();
-        pnlTotalHargaNota = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        lblTotalHargaNota = new javax.swing.JLabel();
         btnCO = new rojeru_san.complementos.RSButtonHover();
-        jScrollPane2 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -149,11 +146,16 @@ public class inputKasir extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblCart);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, 714, 415));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, 1110, 400));
 
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
+            }
+        });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
             }
         });
         getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 110, 410, 40));
@@ -162,34 +164,50 @@ public class inputKasir extends javax.swing.JFrame {
         jLabel1.setText("Product");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 110, -1, 28));
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Total Harga");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 155, -1));
 
         lblTotalHarga.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTotalHarga.setForeground(new java.awt.Color(255, 0, 0));
         lblTotalHarga.setText("Rp. 0");
+        jPanel1.add(lblTotalHarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 220, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblTotalHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotalHarga)
-                    .addComponent(jLabel4))
-                .addGap(0, 12, Short.MAX_VALUE))
-        );
+        uangPembayaran.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uangPembayaran.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        uangPembayaran.setText("Uang Pembayaran");
+        jPanel1.add(uangPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 31, 155, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 610, -1, -1));
+        jTextField1.setText(" ");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 214, 30));
+
+        uangPembayaran1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uangPembayaran1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        uangPembayaran1.setText("Uang Kembalian");
+        jPanel1.add(uangPembayaran1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 74, 155, -1));
+
+        lblKembalian.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblKembalian.setForeground(new java.awt.Color(255, 0, 0));
+        lblKembalian.setText("Rp. 0");
+        jPanel1.add(lblKembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 214, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 590, 470, 110));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1324, 250, -1, -1));
@@ -256,77 +274,13 @@ public class inputKasir extends javax.swing.JFrame {
 
         btnHapus.setBackground(new java.awt.Color(255, 51, 51));
         btnHapus.setText("Hapus");
+        btnHapus.setColorHover(new java.awt.Color(153, 0, 0));
         btnHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHapusActionPerformed(evt);
             }
         });
         getContentPane().add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, 130, 40));
-
-        pnlNota.setBackground(new java.awt.Color(255, 255, 255));
-        pnlNota.setLayout(new java.awt.BorderLayout());
-
-        headerNota.setBackground(new java.awt.Color(255, 255, 255));
-        headerNota.setPreferredSize(new java.awt.Dimension(360, 70));
-        headerNota.setLayout(new java.awt.BorderLayout());
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Three Mas Kentir");
-        headerNota.add(jLabel6, java.awt.BorderLayout.PAGE_START);
-
-        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Jln Mataram, Pesurungan Lor, Kec. Margadana, Kota Tegal, Jawa Tengah");
-        headerNota.add(jLabel7, java.awt.BorderLayout.CENTER);
-
-        pnlNota.add(headerNota, java.awt.BorderLayout.PAGE_START);
-
-        tblNota.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Nama Produk", "QTY", "Harga"
-            }
-        ));
-        jScrollPane3.setViewportView(tblNota);
-
-        pnlNota.add(jScrollPane3, java.awt.BorderLayout.CENTER);
-
-        pnlTotalHargaNota.setBackground(new java.awt.Color(255, 255, 255));
-        pnlTotalHargaNota.setPreferredSize(new java.awt.Dimension(360, 50));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Total Harga");
-
-        lblTotalHargaNota.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTotalHargaNota.setForeground(new java.awt.Color(255, 0, 0));
-        lblTotalHargaNota.setText("Rp. 0");
-
-        javax.swing.GroupLayout pnlTotalHargaNotaLayout = new javax.swing.GroupLayout(pnlTotalHargaNota);
-        pnlTotalHargaNota.setLayout(pnlTotalHargaNotaLayout);
-        pnlTotalHargaNotaLayout.setHorizontalGroup(
-            pnlTotalHargaNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTotalHargaNotaLayout.createSequentialGroup()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblTotalHargaNota, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 102, Short.MAX_VALUE))
-        );
-        pnlTotalHargaNotaLayout.setVerticalGroup(
-            pnlTotalHargaNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTotalHargaNotaLayout.createSequentialGroup()
-                .addGroup(pnlTotalHargaNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotalHargaNota)
-                    .addComponent(jLabel5))
-                .addGap(0, 30, Short.MAX_VALUE))
-        );
-
-        pnlNota.add(pnlTotalHargaNota, java.awt.BorderLayout.PAGE_END);
-
-        getContentPane().add(pnlNota, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 170, 390, 480));
 
         btnCO.setText("CheckOut");
         btnCO.addActionListener(new java.awt.event.ActionListener() {
@@ -335,7 +289,6 @@ public class inputKasir extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnCO, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 610, 130, 40));
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 180, 390, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -379,19 +332,19 @@ public class inputKasir extends javax.swing.JFrame {
         });
         try {
             Connection K = Koneksi.Go();
-            String Q = "SELECT ID, nama_produk, harga_produk_beli, produk_stok "
-                    + "FROM produk WHERE produk_kode='" + kode + "'";
+            String Q = "SELECT id, nama_produk, harga_produk_jual, produk_stok FROM produk WHERE produk_kode='" + kode + "'";
             Statement S = K.createStatement();
             ResultSet R = S.executeQuery(Q);
             while (R.next()) {
-                int id = R.getInt("ID");
+                int id = R.getInt("id");
                 String pName = R.getString("nama_produk");
-                int pPr = R.getInt("harga_produk_beli");
+                int pPr = R.getInt("harga_produk_jual");
                 int pSt = R.getInt("produk_stok");
-                             
+                
+//                boolean adadiTabel = cekID();                
                 
 
-                // pengecekan
+                //cek, apakah produk sudah ada di keranjang
                 int dt = tblCart.getRowCount();//0
                 if(dt > 0){
                     boolean ada = false;
@@ -404,6 +357,7 @@ public class inputKasir extends javax.swing.JFrame {
                             ada = true;
                             baris = i;
                             QTY = dt_QTY;
+                            
                             break;
                         }
                     }
@@ -433,32 +387,75 @@ public class inputKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOActionPerformed
-        // Menghitung total harga dari tblCart
-        double totalHarga = 0;
-        DefaultTableModel modelCart = (DefaultTableModel) tblCart.getModel();
-        DefaultTableModel modelNota = (DefaultTableModel) tblNota.getModel();
-
-        // Memindahkan data dari tblCart ke tblNota
-        for (int i = 0; i < modelCart.getRowCount(); i++) {
-            int id = (int) modelCart.getValueAt(i, 0); 
-            String namaProduk = (String) modelCart.getValueAt(i, 1); 
-            int qty = (int) modelCart.getValueAt(i, 2); 
-            int harga = (int) modelCart.getValueAt(i, 3); 
-
-            // Hitung total harga
-            totalHarga += qty * harga;
-
-            // Tambahkan baris ke tblNota
-            modelNota.addRow(new Object[]{id, namaProduk, qty, harga});
+            //simpan transaksi penjualan ke db
+        try {
+            //catat data transaksi
+            Connection K = Koneksi.Go();
+            Statement S = K.createStatement();
+            SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+            String tgl = SDF.format(new Date());
+            String Q = "INSERT INTO transaksi (waktu) VALUES ('"+tgl+"')";
+            S.executeUpdate(Q);
+            
+            //catat data detail transaksi
+            int row = tblCart.getRowCount();
+            for (int i = 0; i < row; i++) {
+                int id = Integer.parseInt(tblCart.getValueAt(row, 0).toString());
+                int QTY = Integer.parseInt(tblCart.getValueAt(row, 2).toString());
+                int Price = Integer.parseInt(tblCart.getValueAt(row, 3).toString());
+                
+            }
+        } catch (Exception e) {
         }
-
-        // Update total harga di lblTotalHargaNota
-        lblTotalHargaNota.setText("Rp. " + (long) totalHarga);
-
-        // Kosongkan tblCart setelah checkout
-        modelCart.setRowCount(0);
-        lblTotalHarga.setText("Rp. 0");
+        
+        Nota N = new Nota(this, false);
+        N.setMODEL( (DefaultTableModel) tblCart.getModel()); 
+        N.setVisible(true); 
     }//GEN-LAST:event_btnCOActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        int keyCode = evt.getKeyCode();
+        if(keyCode == KeyEvent.VK_F4){
+            jTextField1.setText(""); 
+            jTextField1.requestFocus();
+        }
+    }//GEN-LAST:event_txtSearchKeyPressed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+        String val = jTextField1.getText();
+        if(!val.isEmpty()){
+            int bayar = Integer.parseInt(val);
+            String TH = lblTotalHarga.getText();
+            String[] arrTH = TH.split(" ");
+            int totalH = Integer.parseInt(arrTH[1]);
+            if(bayar >= totalH){
+                int sisa = bayar-totalH;
+                lblKembalian.setText("Rp "+sisa);
+//                enableCheckoutBtn(true); 
+            }else{
+                lblKembalian.setText("Rp 0");
+//                enableCheckoutBtn(false); 
+            }
+        }else{
+            lblKembalian.setText("Rp 0");
+//            enableCheckoutBtn(false);
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        int keyCode = evt.getKeyCode();
+        if(keyCode == KeyEvent.VK_F3){
+            txtSearch.setText(""); 
+            txtSearch.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -505,30 +502,24 @@ public class inputKasir extends javax.swing.JFrame {
     private rojeru_san.complementos.RSButtonHover btnHome2;
     private rojeru_san.complementos.RSButtonHover btnLogout1;
     private javax.swing.JPanel header;
-    private javax.swing.JPanel headerNota;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblKembalian;
     private javax.swing.JLabel lblTotalHarga;
-    private javax.swing.JLabel lblTotalHargaNota;
-    private javax.swing.JPanel pnlNota;
-    private javax.swing.JPanel pnlTotalHargaNota;
     private javax.swing.JPanel sidebar;
     private static javax.swing.JTable tblCart;
-    private javax.swing.JTable tblNota;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JLabel uangPembayaran;
+    private javax.swing.JLabel uangPembayaran1;
     // End of variables declaration//GEN-END:variables
 
     private void updateharga() {

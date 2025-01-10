@@ -1,8 +1,9 @@
 package UILogin;
 
-import Owner.OwnerPage;
+import Owner.OwnerPage1;
 import Kasir.homeKasir;
 import Admin.DashAdm_Home;
+import Owner.Home;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -233,7 +234,7 @@ public class login extends javax.swing.JFrame {
                     DA.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 }else if(lv.equals("owner")){
                     this.setVisible(false); 
-                    OwnerPage O = new OwnerPage(up);
+                    Home O = new Home(up);
                     O.setVisible(true); 
                     O.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
