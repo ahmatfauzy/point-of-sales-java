@@ -4,6 +4,7 @@
  */
 package Kasir;
 
+import UILogin.logout;
 import javax.swing.JFrame;
 
 /**
@@ -319,7 +320,7 @@ public class homeKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnLogout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogout1ActionPerformed
-
+        logout.Logout(this);
     }//GEN-LAST:event_btnLogout1ActionPerformed
 
     private void btnHome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome1ActionPerformed
