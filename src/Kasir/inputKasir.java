@@ -6,8 +6,10 @@ package Kasir;
 
 import Kasir.homeKasir;
 import UILogin.Koneksi;
+import UILogin.logout;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -302,7 +304,7 @@ public class inputKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnLogout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogout1ActionPerformed
-
+        logout.Logout(this);
     }//GEN-LAST:event_btnLogout1ActionPerformed
 
     private void btnHome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome1ActionPerformed
@@ -340,42 +342,41 @@ public class inputKasir extends javax.swing.JFrame {
                 String pName = R.getString("nama_produk");
                 int pPr = R.getInt("harga_produk_jual");
                 int pSt = R.getInt("produk_stok");
-                
-//                boolean adadiTabel = cekID();                
-                
 
+//                boolean adadiTabel = cekID();                
                 //cek, apakah produk sudah ada di keranjang
                 int dt = tblCart.getRowCount();//0
-                if(dt > 0){
+                if (dt > 0) {
                     boolean ada = false;
                     int baris = 0;
                     int QTY = 0;
                     for (int i = 0; i < dt; i++) {
                         int dt_id = Integer.parseInt(tblCart.getValueAt(i, 0).toString());
                         int dt_QTY = Integer.parseInt(tblCart.getValueAt(i, 2).toString());
-                        if(dt_id == id){
+                        if (dt_id == id) {
                             ada = true;
                             baris = i;
                             QTY = dt_QTY;
-                            
+
                             break;
                         }
                     }
-                    
+
                     //percabangan +QTY atau add new produk
-                    if(ada){
-                        tblCart.setValueAt(QTY+1, baris, 2);
-                    }else {
+                    if (ada) {
+                        tblCart.setValueAt(QTY + 1, baris, 2);
+                    } else {
                         Object[] data = {id, pName, 1, pPr};
                         model.addRow(data);
                     }
-                }else{
+                } else {
                     Object[] data = {id, pName, 1, pPr};
                     model.addRow(data);
-                } 
+                }
             }
 
             updateharga();
+            
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -387,30 +388,57 @@ public class inputKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOActionPerformed
-            //simpan transaksi penjualan ke db
+        //simpan transaksi penjualan ke db
         try {
-            //catat data transaksi
+            // Catat data transaksi
             Connection K = Koneksi.Go();
-            Statement S = K.createStatement();
-            SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
-            String tgl = SDF.format(new Date());
-            String Q = "INSERT INTO transaksi (waktu) VALUES ('"+tgl+"')";
-            S.executeUpdate(Q);
-            
-            //catat data detail transaksi
+            String tgl = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+            // Query untuk memasukkan data ke tabel transaksi
+            String transaksiQuery = "INSERT INTO transaksi (tanggal) VALUES (?)";
+            PreparedStatement transaksiStmt = K.prepareStatement(transaksiQuery, Statement.RETURN_GENERATED_KEYS);
+            transaksiStmt.setString(1, tgl);
+            transaksiStmt.executeUpdate();
+
+            // Ambil ID transaksi yang baru saja dibuat
+            ResultSet rs = transaksiStmt.getGeneratedKeys();
+            int transaksiId = 0;
+            if (rs.next()) {
+                transaksiId = rs.getInt(1);
+            }
+
+            // Query untuk memasukkan data ke tabel transaksi_detail
+            String detailQuery = "INSERT INTO transaksi_detail (transaksi_id, produk_detail_id, jumlah, waktu_transaksi, total) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement detailStmt = K.prepareStatement(detailQuery);
+
+            // Iterasi melalui tabel cart untuk mencatat detail transaksi
             int row = tblCart.getRowCount();
             for (int i = 0; i < row; i++) {
-                int id = Integer.parseInt(tblCart.getValueAt(row, 0).toString());
-                int QTY = Integer.parseInt(tblCart.getValueAt(row, 2).toString());
-                int Price = Integer.parseInt(tblCart.getValueAt(row, 3).toString());
-                
+                int produkDetailId = Integer.parseInt(tblCart.getValueAt(i, 0).toString()); // ID produk
+                int jumlah = Integer.parseInt(tblCart.getValueAt(i, 2).toString()); // Jumlah barang
+                int harga = Integer.parseInt(tblCart.getValueAt(i, 3).toString()); // Harga satuan
+                int total = jumlah * harga; // Hitung total harga
+
+                // Set parameter untuk query detail transaksi
+                detailStmt.setInt(1, transaksiId);
+                detailStmt.setInt(2, produkDetailId);
+                detailStmt.setInt(3, jumlah);
+                detailStmt.setString(4, tgl);
+                detailStmt.setInt(5, total);
+                detailStmt.addBatch(); // Tambahkan ke batch
             }
-        } catch (Exception e) {
-        }
-        
-        Nota N = new Nota(this, false);
+
+            // Eksekusi batch untuk efisiensi
+            detailStmt.executeBatch();
+
+            // Tampilkan Nota
+            Nota N = new Nota(this, false);
         N.setMODEL( (DefaultTableModel) tblCart.getModel()); 
         N.setVisible(true); 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnCOActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -420,8 +448,8 @@ public class inputKasir extends javax.swing.JFrame {
     private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
         // TODO add your handling code here:
         int keyCode = evt.getKeyCode();
-        if(keyCode == KeyEvent.VK_F4){
-            jTextField1.setText(""); 
+        if (keyCode == KeyEvent.VK_F4) {
+            jTextField1.setText("");
             jTextField1.requestFocus();
         }
     }//GEN-LAST:event_txtSearchKeyPressed
@@ -429,20 +457,20 @@ public class inputKasir extends javax.swing.JFrame {
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // TODO add your handling code here:
         String val = jTextField1.getText();
-        if(!val.isEmpty()){
+        if (!val.isEmpty()) {
             int bayar = Integer.parseInt(val);
             String TH = lblTotalHarga.getText();
             String[] arrTH = TH.split(" ");
             int totalH = Integer.parseInt(arrTH[1]);
-            if(bayar >= totalH){
-                int sisa = bayar-totalH;
-                lblKembalian.setText("Rp "+sisa);
+            if (bayar >= totalH) {
+                int sisa = bayar - totalH;
+                lblKembalian.setText("Rp " + sisa);
 //                enableCheckoutBtn(true); 
-            }else{
+            } else {
                 lblKembalian.setText("Rp 0");
 //                enableCheckoutBtn(false); 
             }
-        }else{
+        } else {
             lblKembalian.setText("Rp 0");
 //            enableCheckoutBtn(false);
         }
@@ -451,8 +479,8 @@ public class inputKasir extends javax.swing.JFrame {
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         // TODO add your handling code here:
         int keyCode = evt.getKeyCode();
-        if(keyCode == KeyEvent.VK_F3){
-            txtSearch.setText(""); 
+        if (keyCode == KeyEvent.VK_F3) {
+            txtSearch.setText("");
             txtSearch.requestFocus();
         }
     }//GEN-LAST:event_jTextField1KeyPressed
@@ -536,16 +564,15 @@ public class inputKasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
-    
-    
+
     private void removeProductFromCart() {
         int idx = tblCart.getSelectedRow();
-        if(idx != -1){
+        if (idx != -1) {
             DefaultTableModel m = (DefaultTableModel) tblCart.getModel();
-            m.removeRow(idx); 
+            m.removeRow(idx);
             updateharga();
-        }else {
-            JOptionPane.showMessageDialog(this, "Anda belum memilihi data"); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Anda belum memilihi data");
         }
     }
 }
