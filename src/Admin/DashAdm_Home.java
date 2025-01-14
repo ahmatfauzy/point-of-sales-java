@@ -1,31 +1,40 @@
-
 package Admin;
 
+import UILogin.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import UILogin.UserProfile;
 import UILogin.login;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import javax.swing.JFrame;
+import java.sql.SQLException;
+import javax.swing.JLabel;
 
 public class DashAdm_Home extends javax.swing.JFrame {
 
     UserProfile u;
-    
-    
+
     /**
      * Creates new form OwnerPage
      */
     public DashAdm_Home() {
         initComponents();
-        
+
         //fullscreen
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        updateTotalTransaksi();
     }
-    
+
     public DashAdm_Home(UserProfile up) {
         initComponents();
-        
+
         this.u = up;
         txtNamaProfile.setText(u.getFullname());
         txtLevel.setText(u.getLevel());
+        
+        
 //        txtTextNama.setText(u.getFullname());
     }
 
@@ -51,8 +60,10 @@ public class DashAdm_Home extends javax.swing.JFrame {
         btnAkun = new rojeru_san.complementos.RSButtonHover();
         btnLogout1 = new rojeru_san.complementos.RSButtonHover();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        ttlTransaksi1 = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
 
@@ -146,10 +157,41 @@ public class DashAdm_Home extends javax.swing.JFrame {
         );
 
         PanelUtama.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 220, -1));
-
-        jLabel3.setText("menu home");
-        PanelUtama.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 140, -1, -1));
         PanelUtama.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 140, -1, 30));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel4.setBackground(new java.awt.Color(0, 153, 153));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Total Transaksi");
+        jLabel4.setOpaque(true);
+
+        ttlTransaksi1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        ttlTransaksi1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ttlTransaksi1.setText("--");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ttlTransaksi1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ttlTransaksi1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 260, 130));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -257,12 +299,44 @@ public class DashAdm_Home extends javax.swing.JFrame {
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel sidebar;
+    private javax.swing.JLabel ttlTransaksi1;
     private javax.swing.JLabel txtLevel;
     private javax.swing.JLabel txtNamaProfile;
     // End of variables declaration//GEN-END:variables
+
+    private void updateTotalTransaksi() {
+    try {
+        // Koneksi ke database
+        Connection conn = Koneksi.Go();
+
+        // Query SQL untuk menghitung jumlah transaksi
+        String query = "SELECT COUNT(*) AS total_transaksi FROM transaksi";
+        PreparedStatement stmt = conn.prepareStatement(query);
+
+        // Eksekusi query
+        ResultSet rs = stmt.executeQuery();
+
+        // Update JLabel dengan hasil query
+        if (rs.next()) {
+            int totalTransaksi = rs.getInt("total_transaksi");
+            ttlTransaksi1.setText(String.valueOf(totalTransaksi));
+        } else {
+            ttlTransaksi1.setText("0");
+        }
+
+        // Tutup koneksi
+        rs.close();
+        stmt.close();
+        conn.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        ttlTransaksi1.setText("Error");
+    }
+}
 }
