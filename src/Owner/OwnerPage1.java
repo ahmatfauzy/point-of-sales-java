@@ -59,6 +59,7 @@ public class OwnerPage1 extends javax.swing.JFrame {
         setTitle("Halaman Owner");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setName(""); // NOI18N
 
         txtTextNama.setText("Ubah Nama");
         txtTextNama.addActionListener(new java.awt.event.ActionListener() {

@@ -4,8 +4,13 @@
  */
 package Kasir;
 
+import UILogin.Koneksi;
 import UILogin.logout;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -343,7 +348,7 @@ public class laporanKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHome2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -431,6 +436,34 @@ public class laporanKasir extends javax.swing.JFrame {
     private rojeru_san.complementos.RSButtonHover rSButtonHover2;
     private rojeru_san.complementos.RSButtonHover rSButtonHover3;
     private javax.swing.JPanel sidebar;
-    private javax.swing.JTable tblCart1;
+    private static javax.swing.JTable tblCart1;
     // End of variables declaration//GEN-END:variables
+
+    public static void viewdataLaporan(String where) {
+        try {
+            DefaultTableModel m = (DefaultTableModel) tblCart1.getModel();
+            m.getDataVector().removeAllElements();
+            Connection K = Koneksi.Go();
+            Statement S = K.createStatement();
+            String Q = "SELECT * FROM akun " + where;
+            ResultSet R = S.executeQuery(Q);
+            int n = 1;
+            while (R.next()) {
+                int id = R.getInt("id");
+                String fullname = R.getString("fullname");
+                String username = R.getString("username");
+                String password = R.getString("password");
+                String level = R.getString("level");
+                Object[] data = {id, n, fullname, username, password, level};
+                m.addRow(data);
+                n++;
+            }
+
+            tblCart1.getColumnModel().getColumn(0).setMinWidth(0);
+            tblCart1.getColumnModel().getColumn(0).setMaxWidth(0);
+//            
+        } catch (Exception e) {
+            //error handling
+        }
+    }
 }

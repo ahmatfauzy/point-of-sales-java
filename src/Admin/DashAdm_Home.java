@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import UILogin.UserProfile;
 import UILogin.login;
+import UILogin.windows;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.JFrame;
@@ -25,16 +26,27 @@ public class DashAdm_Home extends javax.swing.JFrame {
         //fullscreen
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         updateTotalTransaksi();
+        updateTotalProduk();
+        updateTotalUser();
+
+        windows.setCustomTitle(this, "Dashboard Admin");
     }
 
     public DashAdm_Home(UserProfile up) {
         initComponents();
 
         this.u = up;
-        txtNamaProfile.setText(u.getFullname());
-        txtLevel.setText(u.getLevel());
-        
-        
+//        txtNamaProfile.setText(u.getFullname());
+//        txtLevel.setText(u.getLevel());
+
+        if (this.u != null) {
+            txtNamaProfile.setText(u.getFullname());
+            txtLevel.setText(u.getLevel());
+        }
+        updateTotalTransaksi();
+        updateTotalProduk();
+        updateTotalUser();
+
 //        txtTextNama.setText(u.getFullname());
     }
 
@@ -61,9 +73,15 @@ public class DashAdm_Home extends javax.swing.JFrame {
         btnLogout1 = new rojeru_san.complementos.RSButtonHover();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel6 = new javax.swing.JPanel();
+        pnlTransaksi = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         ttlTransaksi1 = new javax.swing.JLabel();
+        pnlUser = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        ttlUser = new javax.swing.JLabel();
+        pnlProduk = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        ttlProduk = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
 
@@ -98,6 +116,7 @@ public class DashAdm_Home extends javax.swing.JFrame {
         header.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 17, -1, -1));
 
         PanelUtama.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1380, 90));
+        header.getAccessibleContext().setAccessibleName("jj");
 
         sidebar.setBackground(new java.awt.Color(51, 51, 51));
         sidebar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -159,7 +178,7 @@ public class DashAdm_Home extends javax.swing.JFrame {
         PanelUtama.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 220, -1));
         PanelUtama.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 140, -1, 30));
 
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        pnlTransaksi.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setBackground(new java.awt.Color(0, 153, 153));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -172,26 +191,94 @@ public class DashAdm_Home extends javax.swing.JFrame {
         ttlTransaksi1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ttlTransaksi1.setText("--");
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlTransaksiLayout = new javax.swing.GroupLayout(pnlTransaksi);
+        pnlTransaksi.setLayout(pnlTransaksiLayout);
+        pnlTransaksiLayout.setHorizontalGroup(
+            pnlTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTransaksiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ttlTransaksi1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        pnlTransaksiLayout.setVerticalGroup(
+            pnlTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTransaksiLayout.createSequentialGroup()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ttlTransaksi1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addComponent(ttlTransaksi1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 260, 130));
+        PanelUtama.add(pnlTransaksi, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 260, 130));
+
+        pnlUser.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setBackground(new java.awt.Color(0, 153, 153));
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Total User");
+        jLabel6.setOpaque(true);
+
+        ttlUser.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        ttlUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ttlUser.setText("--");
+
+        javax.swing.GroupLayout pnlUserLayout = new javax.swing.GroupLayout(pnlUser);
+        pnlUser.setLayout(pnlUserLayout);
+        pnlUserLayout.setHorizontalGroup(
+            pnlUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUserLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ttlUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pnlUserLayout.setVerticalGroup(
+            pnlUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlUserLayout.createSequentialGroup()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ttlUser, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        PanelUtama.add(pnlUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 120, 260, 130));
+
+        pnlProduk.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel5.setBackground(new java.awt.Color(0, 153, 153));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Total Produk");
+        jLabel5.setOpaque(true);
+
+        ttlProduk.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        ttlProduk.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ttlProduk.setText("--");
+
+        javax.swing.GroupLayout pnlProdukLayout = new javax.swing.GroupLayout(pnlProduk);
+        pnlProduk.setLayout(pnlProdukLayout);
+        pnlProdukLayout.setHorizontalGroup(
+            pnlProdukLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProdukLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ttlProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pnlProdukLayout.setVerticalGroup(
+            pnlProdukLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProdukLayout.createSequentialGroup()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ttlProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        PanelUtama.add(pnlProduk, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 120, 260, 130));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -300,43 +387,113 @@ public class DashAdm_Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel pnlProduk;
+    private javax.swing.JPanel pnlTransaksi;
+    private javax.swing.JPanel pnlUser;
     private javax.swing.JPanel sidebar;
+    private javax.swing.JLabel ttlProduk;
     private javax.swing.JLabel ttlTransaksi1;
+    private javax.swing.JLabel ttlUser;
     private javax.swing.JLabel txtLevel;
     private javax.swing.JLabel txtNamaProfile;
     // End of variables declaration//GEN-END:variables
 
     private void updateTotalTransaksi() {
-    try {
-        // Koneksi ke database
-        Connection conn = Koneksi.Go();
+        try {
+            // Koneksi ke database
+            Connection conn = Koneksi.Go();
 
-        // Query SQL untuk menghitung jumlah transaksi
-        String query = "SELECT COUNT(*) AS total_transaksi FROM transaksi";
-        PreparedStatement stmt = conn.prepareStatement(query);
+            // Query SQL untuk menghitung jumlah transaksi
+            String query = "SELECT COUNT(*) AS total_transaksi FROM transaksi";
+            PreparedStatement stmt = conn.prepareStatement(query);
 
-        // Eksekusi query
-        ResultSet rs = stmt.executeQuery();
+            // Eksekusi query
+            ResultSet rs = stmt.executeQuery();
 
-        // Update JLabel dengan hasil query
-        if (rs.next()) {
-            int totalTransaksi = rs.getInt("total_transaksi");
-            ttlTransaksi1.setText(String.valueOf(totalTransaksi));
-        } else {
-            ttlTransaksi1.setText("0");
+            // Update JLabel dengan hasil query
+            if (rs.next()) {
+                int totalTransaksi = rs.getInt("total_transaksi");
+                ttlTransaksi1.setText(String.valueOf(totalTransaksi));
+            } else {
+                ttlTransaksi1.setText("0");
+            }
+
+            // Tutup koneksi
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ttlTransaksi1.setText("Error");
         }
-
-        // Tutup koneksi
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-        ttlTransaksi1.setText("Error");
     }
-}
+
+    private void updateTotalProduk() {
+        try {
+            // Koneksi ke database
+            Connection conn = Koneksi.Go();
+
+            // Query SQL untuk menghitung jumlah transaksi
+            String query = "SELECT COUNT(*) AS total_produk FROM produk";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            // Eksekusi query
+            ResultSet rs = stmt.executeQuery();
+
+            // Update JLabel dengan hasil query
+            if (rs.next()) {
+                int totalTransaksi = rs.getInt("total_produk");
+                ttlProduk.setText(String.valueOf(totalTransaksi));
+            } else {
+                ttlProduk.setText("0");
+            }
+
+            // Tutup koneksi
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ttlProduk.setText("Error");
+        }
+    }
+
+    private void updateTotalUser() {
+        try {
+            // Koneksi ke database
+            Connection conn = Koneksi.Go();
+
+            // Query SQL untuk menghitung jumlah transaksi
+            String query = "SELECT COUNT(*) AS total_user FROM akun";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            // Eksekusi query
+            ResultSet rs = stmt.executeQuery();
+
+            // Update JLabel dengan hasil query
+            if (rs.next()) {
+                int totalTransaksi = rs.getInt("total_user");
+                ttlUser.setText(String.valueOf(totalTransaksi));
+            } else {
+                ttlUser.setText("0");
+            }
+
+            // Tutup koneksi
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ttlUser.setText("Error");
+        }
+    }
+
+//    private void setCustomTitle(String title) {
+//        this.setTitle(title);
+//    }
 }

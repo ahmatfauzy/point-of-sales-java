@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package latihanChart;
+package Chart;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -89,6 +90,20 @@ public class BarChartExample {
         
         
         return dataset;
+    }
+    
+     public static JPanel getChartPanel() {
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Multi-Series Bar Chart", // Chart title
+                "Category", // X-axis Label
+                "Value", // Y-axis Label
+                createDataset(),
+                PlotOrientation.VERTICAL, // Orientation
+                true, // Include legend
+                true, // Tooltips
+                false // URLs
+        );
+        return new ChartPanel(chart);
     }
 
     public static void main(String[] args) {

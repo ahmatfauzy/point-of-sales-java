@@ -376,7 +376,6 @@ public class inputKasir extends javax.swing.JFrame {
             }
 
             updateharga();
-            
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -433,8 +432,8 @@ public class inputKasir extends javax.swing.JFrame {
 
             // Tampilkan Nota
             Nota N = new Nota(this, false);
-        N.setMODEL( (DefaultTableModel) tblCart.getModel()); 
-        N.setVisible(true); 
+            N.setMODEL((DefaultTableModel) tblCart.getModel());
+            N.setVisible(true);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -573,6 +572,14 @@ public class inputKasir extends javax.swing.JFrame {
             updateharga();
         } else {
             JOptionPane.showMessageDialog(this, "Anda belum memilihi data");
+        }
+    }
+
+    private void enableCheckoutBtn(boolean b) {
+        if (b) {
+            btnCO.setEnabled(b);
+        } else {
+            btnCO.setEnabled(b);
         }
     }
 }
