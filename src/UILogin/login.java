@@ -223,7 +223,7 @@ public class login extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Sukses Login");
                 if(lv.equals("kasir")){
                     this.setVisible(false); 
-                    homeKasir K = new homeKasir();
+                    KasirLagi.homeKasir K = new KasirLagi.homeKasir(up);
                     K.setVisible(true); 
                     K.setExtendedState(JFrame.MAXIMIZED_BOTH);
 

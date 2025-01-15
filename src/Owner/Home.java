@@ -30,10 +30,14 @@ public class Home extends javax.swing.JFrame {
     public Home(UserProfile up) {
         initComponents();
         
-        this.u = up;
-        txtNamaProfile.setText(u.getFullname());
-        txtLevel.setText(u.getLevel());
-//        txtTextNama.setText(u.getFullname());
+        if (up != null) {
+            this.u = up;
+            System.out.println("Full name: " + u.getFullname());
+            txtNamaProfile.setText(u.getFullname());
+            txtLevel.setText(u.getLevel());
+        } else {
+            System.out.println("UserProfile is null");
+        }
     }
 
     /**

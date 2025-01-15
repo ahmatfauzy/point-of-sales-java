@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Kasir;
+package KasirLagi;
 
+import Kasir.*;
 import UILogin.UserProfile;
 import UILogin.logout;
 import javax.swing.JFrame;
@@ -30,8 +31,8 @@ public class homeKasir extends javax.swing.JFrame {
             this.u = up;
             // Debugging output untuk memastikan getFullname() mengembalikan nilai yang benar
             System.out.println("Full name: " + u.getFullname());
-            txtNamaProfile10000.setText(u.getFullname()); // Pastikan txtNamaProfile10000 ada
-            txtLevel10000.setText(u.getLevel());
+            txtNamaProfile.setText(u.getFullname()); // Pastikan txtNamaProfile10000 ada
+            txtLevel.setText(u.getLevel());
         } else {
             System.out.println("UserProfile is null");
         }
@@ -394,6 +395,8 @@ public class homeKasir extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(homeKasir.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
