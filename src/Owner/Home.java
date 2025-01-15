@@ -1,4 +1,3 @@
-
 package Owner;
 
 import UILogin.Koneksi;
@@ -15,21 +14,20 @@ import javax.swing.JFrame;
 public class Home extends javax.swing.JFrame {
 
     UserProfile u;
-    
-    
+
     /**
      * Creates new form OwnerPage
      */
     public Home() {
         initComponents();
-        
+
         //fullscreen
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
-    
+
     public Home(UserProfile up) {
         initComponents();
-        
+
         if (up != null) {
             this.u = up;
             System.out.println("Full name: " + u.getFullname());
@@ -61,14 +59,20 @@ public class Home extends javax.swing.JFrame {
         btnLogout1 = new rojeru_san.complementos.RSButtonHover();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabelPendapatan = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabelProdukTerlaris = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         tglDari = new com.toedter.calendar.JDateChooser();
         tglSampai = new com.toedter.calendar.JDateChooser();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
 
         jMenu1.setText("jMenu1");
 
@@ -145,6 +149,75 @@ public class Home extends javax.swing.JFrame {
         PanelUtama.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 220, -1));
         PanelUtama.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 140, -1, 30));
 
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel7.setBackground(new java.awt.Color(0, 153, 153));
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Pendapatan");
+        jLabel7.setOpaque(true);
+
+        jLabelPendapatan.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabelPendapatan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelPendapatan.setText("--");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelPendapatan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelPendapatan, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        PanelUtama.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 220, -1, -1));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel8.setBackground(new java.awt.Color(0, 153, 153));
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Produk Terlaris");
+        jLabel8.setOpaque(true);
+
+        jLabelProdukTerlaris.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabelProdukTerlaris.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelProdukTerlaris.setText("--");
+        jLabelProdukTerlaris.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelProdukTerlaris, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelProdukTerlaris, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        PanelUtama.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 220, -1, -1));
+
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setBackground(new java.awt.Color(0, 153, 153));
@@ -154,27 +227,9 @@ public class Home extends javax.swing.JFrame {
         jLabel3.setText("Produk Terjual");
         jLabel3.setOpaque(true);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("--");
-
-        tglDari.setDateFormatString("y-MM-dd");
-        tglDari.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                tglDariPropertyChange(evt);
-            }
-        });
-
-        tglSampai.setDateFormatString("y-MM-dd");
-        tglSampai.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                tglSampaiPropertyChange(evt);
-            }
-        });
-
-        jLabel5.setText("Dari");
-
-        jLabel6.setText("Sampai");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -183,18 +238,7 @@ public class Home extends javax.swing.JFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tglDari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tglSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -202,19 +246,11 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tglDari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tglSampai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, -1, -1));
+        PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(153, 0, 51));
         jPanel2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -234,7 +270,29 @@ public class Home extends javax.swing.JFrame {
             .addGap(0, 160, Short.MAX_VALUE)
         );
 
-        PanelUtama.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 120, 260, 160));
+        PanelUtama.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 410, 260, 160));
+
+        jLabel5.setText("Dari");
+        PanelUtama.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
+
+        tglDari.setDateFormatString("y-MM-dd");
+        tglDari.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tglDariPropertyChange(evt);
+            }
+        });
+        PanelUtama.add(tglDari, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, 207, -1));
+
+        tglSampai.setDateFormatString("y-MM-dd");
+        tglSampai.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tglSampaiPropertyChange(evt);
+            }
+        });
+        PanelUtama.add(tglSampai, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, 207, -1));
+
+        jLabel6.setText("Sampai");
+        PanelUtama.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 110, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -268,10 +326,14 @@ public class Home extends javax.swing.JFrame {
 
     private void tglDariPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tglDariPropertyChange
         getDataPenjualan();
+        getPendapatan();
+        getNamaProdukTerlaris();
     }//GEN-LAST:event_tglDariPropertyChange
 
     private void tglSampaiPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tglSampaiPropertyChange
         getDataPenjualan();
+        getPendapatan();
+        getNamaProdukTerlaris();
     }//GEN-LAST:event_tglSampaiPropertyChange
 
     private void jPanel2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyReleased
@@ -357,10 +419,16 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelPendapatan;
+    private javax.swing.JLabel jLabelProdukTerlaris;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel sidebar;
     private com.toedter.calendar.JDateChooser tglDari;
@@ -388,14 +456,82 @@ public class Home extends javax.swing.JFrame {
                 Connection K = UILogin.Koneksi.Go();
                 Statement S = K.createStatement();
                 ResultSet R = S.executeQuery(Q);
-                while (R.next()) {                    
-                    String jml = R.getString("n"); 
+                while (R.next()) {
+                    String jml = R.getString("n");
                     jLabel4.setText(jml);
-                }                 
+                }
             } catch (SQLException e) {
             }
 
         }
     }
 
+    private void getPendapatan() {
+        Date dari = tglDari.getDate();
+        Date sampai = tglSampai.getDate();
+
+        if (dari != null && sampai != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            String tgl_dari = sdf.format(dari);
+            String tgl_sampai = sdf.format(sampai);
+
+            String Q = "SELECT SUM(total) AS total_pendapatan "
+                    + "FROM  transaksi_detail "
+                    + "WHERE waktu_transaksi "
+                    + "BETWEEN '" + tgl_dari + "' AND '" + tgl_sampai + "';";
+
+            try {
+                Connection K = UILogin.Koneksi.Go();
+                Statement S = K.createStatement();
+                ResultSet R = S.executeQuery(Q);
+                if (R.next()) {
+                    String total = R.getString("total_pendapatan");
+                    jLabelPendapatan.setText("Rp. " + total != null ? total : "0");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void getNamaProdukTerlaris() {
+        Date dari = tglDari.getDate();
+        Date sampai = tglSampai.getDate();
+
+        if (dari != null && sampai != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            String tgl_dari = sdf.format(dari);
+            String tgl_sampai = sdf.format(sampai);
+
+            String Q = "SELECT "
+                    + "    nama_produk "
+                    + "FROM "
+                    + "    transaksi_detail td "
+                    + "JOIN "
+                    + "    produk p ON td.produk_detail_id = p.id "
+                    + "WHERE "
+                    + "    td.waktu_transaksi BETWEEN '" + tgl_dari + "' AND '" + tgl_sampai + "' "
+                    + "GROUP BY "
+                    + "    p.nama_produk "
+                    + "ORDER BY "
+                    + "    SUM(td.jumlah) DESC "
+                    + "LIMIT 1;";
+
+            try {
+                Connection K = UILogin.Koneksi.Go();
+                Statement S = K.createStatement();
+                ResultSet R = S.executeQuery(Q);
+                if (R.next()) {
+                    String produkTerlaris = R.getString("nama_produk");
+                    jLabelProdukTerlaris.setText(produkTerlaris);
+                } else {
+                    jLabelProdukTerlaris.setText("Tidak ada data dalam periode ini.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

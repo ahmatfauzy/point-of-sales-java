@@ -4,7 +4,6 @@
  */
 package KasirLagi;
 
-import Kasir.*;
 import UILogin.UserProfile;
 import UILogin.logout;
 import javax.swing.JFrame;
@@ -31,8 +30,8 @@ public class homeKasir extends javax.swing.JFrame {
             this.u = up;
             // Debugging output untuk memastikan getFullname() mengembalikan nilai yang benar
             System.out.println("Full name: " + u.getFullname());
-            txtNamaProfile.setText(u.getFullname()); // Pastikan txtNamaProfile10000 ada
-            txtLevel.setText(u.getLevel());
+            txtNamaProfile10000.setText(u.getFullname()); // Pastikan txtNamaProfile10000 ada
+            txtLevel10000.setText(u.getLevel());
         } else {
             System.out.println("UserProfile is null");
         }
@@ -100,8 +99,9 @@ public class homeKasir extends javax.swing.JFrame {
 
         txtNamaProfile10000.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         txtNamaProfile10000.setForeground(new java.awt.Color(240, 240, 240));
+        txtNamaProfile10000.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         txtNamaProfile10000.setText("Nama");
-        header.add(txtNamaProfile10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(1149, 25, -1, 23));
+        header.add(txtNamaProfile10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(1089, 25, 120, 23));
 
         txtLevel10000.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         txtLevel10000.setForeground(new java.awt.Color(240, 240, 240));
@@ -365,7 +365,7 @@ public class homeKasir extends javax.swing.JFrame {
     private void btnHome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        inputKasir l = new inputKasir();
+        KasirLagi.inputKasir l = new KasirLagi.inputKasir(u);
         l.setVisible(true);
         l.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_btnHome2ActionPerformed

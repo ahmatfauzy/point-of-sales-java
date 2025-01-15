@@ -4,9 +4,7 @@
  */
 package KasirLagi;
 
-import Kasir.*;
 import UILogin.UserProfile;
-import Kasir.homeKasir;
 import UILogin.Koneksi;
 import UILogin.logout;
 import java.awt.event.KeyEvent;
@@ -19,9 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -29,11 +29,28 @@ import javax.swing.table.DefaultTableModel;
  */
 public class inputKasir extends javax.swing.JFrame {
 
+    UILogin.UserProfile u;
+
     /**
      * Creates new form inputKasir
      */
     public inputKasir() {
         initComponents();
+    }
+
+    public inputKasir(UILogin.UserProfile up) {
+        initComponents();
+
+        if (up != null) {
+            this.u = up;
+            // Debugging output untuk memastikan getFullname() mengembalikan nilai yang benar
+            System.out.println("Full name: " + u.getFullname());
+            txtNamaProfile10000.setText(u.getFullname()); // Pastikan txtNamaProfile10000 ada
+            txtLevel10000.setText(u.getLevel());
+        } else {
+            System.out.println("UserProfile is null");
+        }
+
     }
 
     /**
@@ -45,6 +62,9 @@ public class inputKasir extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtNamaProfile10000 = new javax.swing.JLabel();
+        txtLevel10000 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -74,6 +94,21 @@ public class inputKasir extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtNamaProfile10000.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        txtNamaProfile10000.setForeground(new java.awt.Color(240, 240, 240));
+        txtNamaProfile10000.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        txtNamaProfile10000.setText("Nama");
+        getContentPane().add(txtNamaProfile10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(1149, 25, -1, 23));
+
+        txtLevel10000.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        txtLevel10000.setForeground(new java.awt.Color(240, 240, 240));
+        txtLevel10000.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        txtLevel10000.setText("Role");
+        getContentPane().add(txtLevel10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(1183, 54, -1, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/PROFILE.png"))); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 20, -1, -1));
 
         header.setBackground(new java.awt.Color(12, 139, 139));
         header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -145,7 +180,7 @@ public class inputKasir extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "NAMA PRODUK", "QTY", "HARGA"
+                "ID", "NAMA PRODUK", "QTY", "HARGA", "kasir"
             }
         ));
         jScrollPane1.setViewportView(tblCart);
@@ -300,7 +335,7 @@ public class inputKasir extends javax.swing.JFrame {
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        laporanKasir l = new laporanKasir();
+        KasirLagi.laporanKasir l = new KasirLagi.laporanKasir(u);
         l.setVisible(true);
         l.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_btnHomeActionPerformed
@@ -312,7 +347,7 @@ public class inputKasir extends javax.swing.JFrame {
     private void btnHome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        homeKasir l = new homeKasir();
+        homeKasir l = new homeKasir(u);
         l.setVisible(true);
         l.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_btnHome1ActionPerformed
@@ -389,43 +424,47 @@ public class inputKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOActionPerformed
-        //simpan transaksi penjualan ke db
+        // simpan transaksi penjualan ke db
         try {
-            // Catat data transaksi
+            // Sembunyikan kolom kasir_id di tabel
+            // Simpan transaksi penjualan ke DB
             Connection K = Koneksi.Go();
             String tgl = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-            // Query untuk memasukkan data ke tabel transaksi
+            int kasirId = u.getId(); // ID kasir yang sedang login
+
+            // Query untuk tabel transaksi
             String transaksiQuery = "INSERT INTO transaksi (tanggal) VALUES (?)";
             PreparedStatement transaksiStmt = K.prepareStatement(transaksiQuery, Statement.RETURN_GENERATED_KEYS);
             transaksiStmt.setString(1, tgl);
             transaksiStmt.executeUpdate();
 
-            // Ambil ID transaksi yang baru saja dibuat
+            // Ambil ID transaksi baru
             ResultSet rs = transaksiStmt.getGeneratedKeys();
             int transaksiId = 0;
             if (rs.next()) {
                 transaksiId = rs.getInt(1);
             }
 
-            // Query untuk memasukkan data ke tabel transaksi_detail
-            String detailQuery = "INSERT INTO transaksi_detail (transaksi_id, produk_detail_id, jumlah, waktu_transaksi, total) VALUES (?, ?, ?, ?, ?)";
+            // Query untuk tabel transaksi_detail
+            String detailQuery = "INSERT INTO transaksi_detail (transaksi_id, produk_detail_id, jumlah, waktu_transaksi, total, kasir_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement detailStmt = K.prepareStatement(detailQuery);
 
-            // Iterasi melalui tabel cart untuk mencatat detail transaksi
+            // Iterasi data di tabel cart
             int row = tblCart.getRowCount();
             for (int i = 0; i < row; i++) {
                 int produkDetailId = Integer.parseInt(tblCart.getValueAt(i, 0).toString()); // ID produk
                 int jumlah = Integer.parseInt(tblCart.getValueAt(i, 2).toString()); // Jumlah barang
                 int harga = Integer.parseInt(tblCart.getValueAt(i, 3).toString()); // Harga satuan
-                int total = jumlah * harga; // Hitung total harga
+                int total = jumlah * harga; // Hitung total
 
-                // Set parameter untuk query detail transaksi
-                detailStmt.setInt(1, transaksiId);
-                detailStmt.setInt(2, produkDetailId);
-                detailStmt.setInt(3, jumlah);
-                detailStmt.setString(4, tgl);
-                detailStmt.setInt(5, total);
+                // Masukkan data ke query
+                detailStmt.setInt(1, transaksiId); // transaksi_id
+                detailStmt.setInt(2, produkDetailId); // produk_detail_id
+                detailStmt.setInt(3, jumlah); // jumlah
+                detailStmt.setString(4, tgl); // waktu_transaksi
+                detailStmt.setInt(5, total); // total
+                detailStmt.setInt(6, kasirId); // kasir_id
                 detailStmt.addBatch(); // Tambahkan ke batch
             }
 
@@ -436,6 +475,8 @@ public class inputKasir extends javax.swing.JFrame {
             Nota N = new Nota(this, false);
             N.setMODEL((DefaultTableModel) tblCart.getModel());
             N.setVisible(true);
+
+            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -535,6 +576,7 @@ public class inputKasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -546,6 +588,8 @@ public class inputKasir extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotalHarga;
     private javax.swing.JPanel sidebar;
     private static javax.swing.JTable tblCart;
+    private javax.swing.JLabel txtLevel10000;
+    private javax.swing.JLabel txtNamaProfile10000;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JLabel uangPembayaran;
     private javax.swing.JLabel uangPembayaran1;
@@ -584,4 +628,14 @@ public class inputKasir extends javax.swing.JFrame {
             btnCO.setEnabled(b);
         }
     }
+
+    private void hideColumn(JTable table, int columnIndex) {
+        // Sembunyikan kolom berdasarkan indeks
+        TableColumn column = table.getColumnModel().getColumn(columnIndex);
+        column.setMinWidth(0);
+        column.setMaxWidth(0);
+        column.setWidth(0);
+        column.setPreferredWidth(0);
+    }
+
 }

@@ -4,7 +4,7 @@
  */
 package KasirLagi;
 
-import Kasir.*;
+import UILogin.UserProfile;
 import UILogin.Koneksi;
 import UILogin.logout;
 import java.sql.Connection;
@@ -19,12 +19,29 @@ import javax.swing.table.DefaultTableModel;
  */
 public class laporanKasir extends javax.swing.JFrame {
 
+    UserProfile u;
     /**
      * Creates new form inputKasir
      */
     public laporanKasir() {
         initComponents();
     }
+
+    public laporanKasir(UILogin.UserProfile up) {
+        initComponents();
+
+        if (up != null) {
+            this.u = up;
+            // Debugging output untuk memastikan getFullname() mengembalikan nilai yang benar
+            System.out.println("Full name: " + u.getFullname());
+            txtNamaProfile10000.setText(u.getFullname()); // Pastikan txtNamaProfile10000 ada
+            txtLevel10000.setText(u.getLevel());
+        } else {
+            System.out.println("UserProfile is null");
+        }
+
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,6 +52,9 @@ public class laporanKasir extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtNamaProfile10000 = new javax.swing.JLabel();
+        txtLevel10000 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -71,6 +91,20 @@ public class laporanKasir extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtNamaProfile10000.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        txtNamaProfile10000.setForeground(new java.awt.Color(240, 240, 240));
+        txtNamaProfile10000.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        txtNamaProfile10000.setText("Nama");
+        getContentPane().add(txtNamaProfile10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(1089, 25, 120, 23));
+
+        txtLevel10000.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        txtLevel10000.setForeground(new java.awt.Color(240, 240, 240));
+        txtLevel10000.setText("Role");
+        getContentPane().add(txtLevel10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(1183, 54, -1, -1));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/PROFILE.png"))); // NOI18N
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 20, -1, -1));
 
         header.setBackground(new java.awt.Color(12, 139, 139));
         header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -342,7 +376,7 @@ public class laporanKasir extends javax.swing.JFrame {
     private void btnHome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        inputKasir l = new inputKasir();
+        inputKasir l = new inputKasir(u);
         l.setVisible(true);
         l.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_btnHome2ActionPerformed
@@ -411,6 +445,7 @@ public class laporanKasir extends javax.swing.JFrame {
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -437,6 +472,8 @@ public class laporanKasir extends javax.swing.JFrame {
     private rojeru_san.complementos.RSButtonHover rSButtonHover3;
     private javax.swing.JPanel sidebar;
     private static javax.swing.JTable tblCart1;
+    private javax.swing.JLabel txtLevel10000;
+    private javax.swing.JLabel txtNamaProfile10000;
     // End of variables declaration//GEN-END:variables
 
     public static void viewdataLaporan(String where) {
