@@ -51,6 +51,8 @@ public class inputKasir extends javax.swing.JFrame {
             System.out.println("UserProfile is null");
         }
 
+        updateData1();
+
     }
 
     /**
@@ -91,6 +93,7 @@ public class inputKasir extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         btnHapus = new rojeru_san.complementos.RSButtonHover();
         btnCO = new rojeru_san.complementos.RSButtonHover();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -220,7 +223,6 @@ public class inputKasir extends javax.swing.JFrame {
         uangPembayaran.setText("Uang Pembayaran");
         jPanel1.add(uangPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 31, 155, -1));
 
-        jTextField1.setText(" ");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -329,6 +331,9 @@ public class inputKasir extends javax.swing.JFrame {
         });
         getContentPane().add(btnCO, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 610, 130, 40));
 
+        jLabel6.setText("jLabel6");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -424,16 +429,88 @@ public class inputKasir extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOActionPerformed
-        // simpan transaksi penjualan ke db
+
+//        try {
+//            // Simpan transaksi penjualan ke database
+//            Connection K = Koneksi.Go();
+//            String tgl = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+//
+//            int kasirId = u.getId(); // ID kasir yang sedang login
+//
+//            // Query untuk tabel transaksi
+//            String transaksiQuery = "INSERT INTO transaksi (tanggal) VALUES (?)";
+//            PreparedStatement transaksiStmt = K.prepareStatement(transaksiQuery, Statement.RETURN_GENERATED_KEYS);
+//            transaksiStmt.setString(1, tgl);
+//            transaksiStmt.executeUpdate();
+//
+//            // Ambil ID transaksi baru
+//            ResultSet rs = transaksiStmt.getGeneratedKeys();
+//            int transaksiId = 0;
+//            if (rs.next()) {
+//                transaksiId = rs.getInt(1);
+//            }
+//
+//            // Query untuk tabel transaksi_detail
+//            String detailQuery = "INSERT INTO transaksi_detail (transaksi_id, produk_detail_id, jumlah, waktu_transaksi, total, kasir_id) VALUES (?, ?, ?, ?, ?, ?)";
+//            PreparedStatement detailStmt = K.prepareStatement(detailQuery);
+//
+//            String val = jTextField1.getText();
+//        if(!val.isEmpty()){
+//            int bayar = Integer.parseInt(val);
+//            String TH = lblTotalHarga.getText();
+//            String[] arrTH = TH.split(" ");
+//            int totalH = Integer.parseInt(arrTH[1]);
+//            if(bayar >= totalH){
+//                long sisa = bayar-totalH;
+//                lblKembalian.setText("Rp "+sisa);
+//                enableCheckoutBtn(true); 
+//            }else{
+//                lblKembalian.setText("Rp 0");
+//                enableCheckoutBtn(false); 
+//            }
+//        }else{
+//            lblKembalian.setText("Rp 0");
+//            enableCheckoutBtn(false);
+//        }
+//
+//            // Iterasi data di tabel cart
+//            int row = tblCart.getRowCount();
+//            for (int i = 0; i < row; i++) {
+//                int produkDetailId = Integer.parseInt(tblCart.getValueAt(i, 0).toString()); // ID produk
+//                int jumlah = Integer.parseInt(tblCart.getValueAt(i, 2).toString()); // Jumlah barang
+//                int harga = Integer.parseInt(tblCart.getValueAt(i, 3).toString()); // Harga satuan
+//                int total = jumlah * harga; // Hitung total
+//
+//                // Masukkan data ke query
+//                detailStmt.setInt(1, transaksiId); // transaksi_id
+//                detailStmt.setInt(2, produkDetailId); // produk_detail_id
+//                detailStmt.setInt(3, jumlah); // jumlah
+//                detailStmt.setString(4, tgl); // waktu_transaksi
+//                detailStmt.setInt(5, total); // total
+//                detailStmt.setInt(6, kasirId); // kasir_id
+//                detailStmt.addBatch(); // Tambahkan ke batch
+//            }
+//
+//            // Eksekusi batch untuk efisiensi
+//            detailStmt.executeBatch();
+//
+//            // Tampilkan Nota
+//            Nota N = new Nota(this, false);
+//            N.setMODEL((DefaultTableModel) tblCart.getModel());
+//            N.setVisible(true);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            lblKembalian.setText("Terjadi kesalahan, coba lagi");
+//        }
         try {
-            // Sembunyikan kolom kasir_id di tabel
-            // Simpan transaksi penjualan ke DB
+            // Koneksi ke database
             Connection K = Koneksi.Go();
             String tgl = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
             int kasirId = u.getId(); // ID kasir yang sedang login
 
-            // Query untuk tabel transaksi
+            // Insert data ke tabel transaksi
             String transaksiQuery = "INSERT INTO transaksi (tanggal) VALUES (?)";
             PreparedStatement transaksiStmt = K.prepareStatement(transaksiQuery, Statement.RETURN_GENERATED_KEYS);
             transaksiStmt.setString(1, tgl);
@@ -446,9 +523,39 @@ public class inputKasir extends javax.swing.JFrame {
                 transaksiId = rs.getInt(1);
             }
 
-            // Query untuk tabel transaksi_detail
+            // Insert data ke tabel transaksi_detail
             String detailQuery = "INSERT INTO transaksi_detail (transaksi_id, produk_detail_id, jumlah, waktu_transaksi, total, kasir_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement detailStmt = K.prepareStatement(detailQuery);
+
+            // Ambil nilai dari input
+            String val = jTextField1.getText(); // Input pembayaran dari pengguna
+            if (!val.isEmpty()) {
+                int bayar = Integer.parseInt(val); // Konversi pembayaran menjadi angka
+                String TH = lblTotalHarga.getText(); // Ambil total harga dari label
+                String cleanedTH = TH.replace("Rp. ", "").trim(); // Hapus "Rp. " dan spasi
+                int totalH = Integer.parseInt(cleanedTH); // Konversi total harga menjadi angka
+
+                if (bayar >= totalH) {
+                    long sisa = bayar - totalH; // Hitung kembalian
+                    lblKembalian.setText("Rp. " + sisa); // Tampilkan kembalian
+                    enableCheckoutBtn(true);
+
+                    // Simpan data biaya ke tabel biaya_transaksi
+                    String biayaQuery = "INSERT INTO biaya_transaksi (id_transaksi_det, total_harga, uang_pembayaran, uang_kembali) VALUES (?, ?, ?, ?)";
+                    PreparedStatement biayaStmt = K.prepareStatement(biayaQuery);
+                    biayaStmt.setInt(1, transaksiId);
+                    biayaStmt.setInt(2, totalH); // Total harga
+                    biayaStmt.setInt(3, bayar); // Uang bayar
+                    biayaStmt.setInt(4, (int) sisa); // Uang kembalian
+                    biayaStmt.executeUpdate();
+                } else {
+                    lblKembalian.setText("Rp. 0"); // Tidak ada kembalian
+                    enableCheckoutBtn(false); // Nonaktifkan tombol checkout
+                }
+            } else {
+                lblKembalian.setText("Rp. 0"); // Tidak ada input pembayaran
+                enableCheckoutBtn(false); // Nonaktifkan tombol checkout
+            }
 
             // Iterasi data di tabel cart
             int row = tblCart.getRowCount();
@@ -476,11 +583,12 @@ public class inputKasir extends javax.swing.JFrame {
             N.setMODEL((DefaultTableModel) tblCart.getModel());
             N.setVisible(true);
 
-            
-
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Input angka tidak valid!", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }//GEN-LAST:event_btnCOActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -577,6 +685,7 @@ public class inputKasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -622,11 +731,12 @@ public class inputKasir extends javax.swing.JFrame {
     }
 
     private void enableCheckoutBtn(boolean b) {
-        if (b) {
-            btnCO.setEnabled(b);
-        } else {
-            btnCO.setEnabled(b);
-        }
+//        if (b) {
+//            btnCO.setEnabled(b);
+//        } else {
+//            btnCO.setEnabled(b);
+//        }
+        btnCO.setEnabled(b);
     }
 
     private void hideColumn(JTable table, int columnIndex) {
@@ -636,6 +746,11 @@ public class inputKasir extends javax.swing.JFrame {
         column.setMaxWidth(0);
         column.setWidth(0);
         column.setPreferredWidth(0);
+    }
+
+    private void updateData1() {
+        tblCart.getColumnModel().getColumn(4).setMinWidth(0);
+        tblCart.getColumnModel().getColumn(4).setMaxWidth(0);
     }
 
 }

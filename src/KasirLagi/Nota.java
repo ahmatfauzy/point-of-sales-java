@@ -4,13 +4,19 @@
  */
 package KasirLagi;
 
+import UILogin.Koneksi;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.print.PageFormat;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.sql.Connection;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +31,9 @@ public class Nota extends javax.swing.JDialog {
     public Nota(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        getDataBiaya();
+        updateData1();
 
     }
 
@@ -44,11 +53,11 @@ public class Nota extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        totalHarga = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        uangPembayaran = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        uangKembali = new javax.swing.JLabel();
         btnPrint = new rojeru_san.complementos.RSButtonHover();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -113,22 +122,22 @@ public class Nota extends javax.swing.JDialog {
         jLabel3.setText("Total Belanja");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 120, -1));
 
-        jLabel6.setText("Rp 0");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
+        totalHarga.setText("Rp 0");
+        jPanel3.add(totalHarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("uang Pembayaran");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 120, -1));
 
-        jLabel7.setText("Rp 0");
-        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
+        uangPembayaran.setText("Rp 0");
+        jPanel3.add(uangPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Uang Kembali");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 120, -1));
 
-        jLabel8.setText("Rp 0");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, -1, -1));
+        uangKembali.setText("Rp 0");
+        jPanel3.add(uangKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, -1, -1));
 
         btnPrint.setText("Print");
         btnPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -144,13 +153,13 @@ public class Nota extends javax.swing.JDialog {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -168,6 +177,11 @@ public class Nota extends javax.swing.JDialog {
         jTable1.setModel(getMODEL());
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        
+        jTable1.getColumnModel().getColumn(4).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(4).setMaxWidth(0);
+
+
     }//GEN-LAST:event_formWindowOpened
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
@@ -249,9 +263,6 @@ public class Nota extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -259,6 +270,9 @@ public class Nota extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel totalHarga;
+    private javax.swing.JLabel uangKembali;
+    private javax.swing.JLabel uangPembayaran;
     // End of variables declaration//GEN-END:variables
 
     public DefaultTableModel getMODEL() {
@@ -267,6 +281,65 @@ public class Nota extends javax.swing.JDialog {
 
     public void setMODEL(DefaultTableModel MODEL) {
         this.MODEL = MODEL;
+    }
+
+    public void getDataBiaya() {
+        // Query untuk mengambil data dengan id terbesar
+        String query = "SELECT id, id_transaksi_det, total_harga, uang_pembayaran, uang_kembali FROM biaya_transaksi ORDER BY id DESC LIMIT 1";
+
+        try {
+            // Debug: Menampilkan query yang dijalankan
+            System.out.println("Executing query: " + query);
+
+            // Persiapkan statement untuk mengambil data
+            Connection K = Koneksi.Go();
+            PreparedStatement stmt = K.prepareStatement(query);
+
+            // Eksekusi query dan ambil hasilnya
+            ResultSet rs = stmt.executeQuery();
+
+            // Debug: Mengecek apakah ada hasil yang ditemukan
+            if (!rs.next()) {
+                System.out.println("No data found for the query.");
+                JOptionPane.showMessageDialog(this, "Data transaksi tidak ditemukan.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                return; // Kembali jika tidak ada data
+            }
+
+            // Ambil data dari ResultSet
+            int totalHarga = rs.getInt("total_harga");
+            int uangPembayaran = rs.getInt("uang_pembayaran");
+            int uangKembali = rs.getInt("uang_kembali");
+
+            // Debug: Menampilkan data yang diambil
+            System.out.println("Data retrieved: ");
+            System.out.println("Total Harga: " + totalHarga);
+            System.out.println("Uang Pembayaran: " + uangPembayaran);
+            System.out.println("Uang Kembali: " + uangKembali);
+
+            // Tampilkan data pada JLabel (id dan id_transaksi_det tidak ditampilkan)
+            this.totalHarga.setText("Rp. " + totalHarga);
+            this.uangPembayaran.setText("Rp. " + uangPembayaran);
+            this.uangKembali.setText("Rp. " + uangKembali);
+
+        } catch (SQLException e) {
+            // Error handling untuk SQLExceptions
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mengambil data transaksi dari database. " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            // Debug: Menampilkan stack trace untuk debugging lebih lanjut
+            System.out.println("SQLException occurred: " + e.getMessage());
+
+        } catch (Exception e) {
+            // Error handling untuk kesalahan lainnya
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan tak terduga: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            // Debug: Menampilkan stack trace untuk debugging lebih lanjut
+            System.out.println("Unexpected error occurred: " + e.getMessage());
+        }
+    }
+    
+     private void updateData1() {
+        jTable1.getColumnModel().getColumn(2).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(2).setMaxWidth(0);
     }
 
 }
