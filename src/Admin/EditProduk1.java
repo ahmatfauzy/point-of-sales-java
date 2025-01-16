@@ -233,7 +233,7 @@ public class EditProduk1 extends javax.swing.JDialog {
         });
         jPanel1.add(txtHargaJual, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 253, 30));
 
-        jLabel9.setText("Harga Jual");
+        jLabel9.setText("Harga Beli");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 80, 20));
 
         txtDeskripsiProduk.addActionListener(new java.awt.event.ActionListener() {

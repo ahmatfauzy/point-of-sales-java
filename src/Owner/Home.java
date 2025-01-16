@@ -4,6 +4,7 @@ import UILogin.Koneksi;
 import UILogin.UserProfile;
 import UILogin.login;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import javax.swing.*;
 import java.sql.PreparedStatement;
+import java.util.Calendar;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
 
 public class Home extends javax.swing.JFrame {
 
@@ -30,7 +34,6 @@ public class Home extends javax.swing.JFrame {
 
         //fullscreen
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        
 
     }
 
@@ -45,9 +48,8 @@ public class Home extends javax.swing.JFrame {
         } else {
             System.out.println("UserProfile is null");
         }
+        updateGrafik();
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,6 +86,8 @@ public class Home extends javax.swing.JFrame {
         tglDari = new com.toedter.calendar.JDateChooser();
         tglSampai = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
+        ambilTahun = new com.toedter.calendar.JYearChooser();
+        pesan1 = new javax.swing.JPanel();
 
         jMenu1.setText("jMenu1");
 
@@ -263,7 +267,7 @@ public class Home extends javax.swing.JFrame {
 
         PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
-        lblForChart.setBackground(new java.awt.Color(153, 0, 51));
+        lblForChart.setBackground(new java.awt.Color(255, 255, 255));
         lblForChart.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 lblForChartKeyReleased(evt);
@@ -281,7 +285,7 @@ public class Home extends javax.swing.JFrame {
             .addGap(0, 220, Short.MAX_VALUE)
         );
 
-        PanelUtama.add(lblForChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 430, 580, 220));
+        PanelUtama.add(lblForChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 440, 580, 220));
 
         jLabel5.setText("Dari");
         PanelUtama.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
@@ -304,6 +308,20 @@ public class Home extends javax.swing.JFrame {
 
         jLabel6.setText("Sampai");
         PanelUtama.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 110, -1, -1));
+        PanelUtama.add(ambilTahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 140, 110, -1));
+
+        javax.swing.GroupLayout pesan1Layout = new javax.swing.GroupLayout(pesan1);
+        pesan1.setLayout(pesan1Layout);
+        pesan1Layout.setHorizontalGroup(
+            pesan1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 320, Short.MAX_VALUE)
+        );
+        pesan1Layout.setVerticalGroup(
+            pesan1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        PanelUtama.add(pesan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 440, 320, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -323,6 +341,83 @@ public class Home extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+//    private void btnLoadChartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadChartActionPerformed
+//            // TODO add your handling code here:
+//           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//
+//    // Periode default
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.set(Calendar.DAY_OF_MONTH, 1);
+//            String defaultDariTanggal = sdf.format(calendar.getTime());
+//            String defaultSampaiTanggal = sdf.format(new Date());
+//
+//            // Ambil tanggal dari input
+//            String dariTanggal = (tglDari.getDate() != null) ? sdf.format(tglDari.getDate()) : defaultDariTanggal;
+//            String sampaiTanggal = (tglSampai.getDate() != null) ? sdf.format(tglSampai.getDate()) : defaultSampaiTanggal;
+//
+//            // Tampilkan Bar Chart
+//            loadBarChart(lblForChart, dariTanggal, sampaiTanggal);
+//        System.out.println("halooo");
+//    }
+//    
+//    private void loadBarChart(JPanel panelChart, String dariTanggal, String sampaiTanggal) {
+//            try {
+//                // Buat koneksi ke database
+//                Connection conn = Koneksi.Go();
+//
+//                // Query SQL untuk mendapatkan data kinerja kasir
+//                String sql = "SELECT a.fullname, SUM(d.jumlah_produk) AS jumlah_terjual " +
+//                             "FROM transaksi t " +
+//                             "JOIN transaksi_detail d ON t.ID = d.transaksi_id " +
+//                             "JOIN akun a ON t.id = a.id " +
+//                             "WHERE t.tanggal >= ? AND t.tanggal <= ? " +
+//                             "GROUP BY p.nama_lengkap";
+//
+//                // Eksekusi query
+//                PreparedStatement stmt = conn.prepareStatement(sql);
+//                stmt.setString(1, dariTanggal);
+//                stmt.setString(2, sampaiTanggal);
+//                ResultSet rs = stmt.executeQuery();
+//
+//                // Dataset untuk Bar Chart
+//                DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//
+//                // Tambahkan data langsung ke dataset
+//                while (rs.next()) {
+//                    String namaKasir = rs.getString("nama_lengkap");
+//                    int jumlahTerjual = rs.getInt("jumlah_terjual");
+//                    dataset.addValue(jumlahTerjual, "Jumlah Terjual", namaKasir);
+//                }
+//
+//                rs.close();
+//                stmt.close();
+//
+//                // Buat Bar Chart
+//                JFreeChart barChart = ChartFactory.createBarChart(
+//                    "Kinerja Kasir",          // Judul Chart
+//                    "Kasir",                 // Label Kategori (X)
+//                    "Jumlah Produk Terjual", // Label Nilai (Y)
+//                    dataset,                 // Dataset
+//                    PlotOrientation.VERTICAL, // Orientasi Chart
+//                    false,                   // Legenda
+//                    true,                    // Tooltips
+//                    false                    // URL
+//                );
+//
+//                // Tambahkan Chart ke Panel
+//                ChartPanel chartPanel = new ChartPanel(barChart);
+//                chartPanel.setPreferredSize(new Dimension(panelChart.getWidth(), panelChart.getHeight()));
+//                lblForChart.removeAll();
+//                lblForChart.setLayout(new BorderLayout());
+//                lblForChart.add(chartPanel, BorderLayout.CENTER);
+//                lblForChart.validate();
+//
+//            } catch (SQLException e) {
+//                JOptionPane.showMessageDialog(panelChart, "Gagal memuat data kinerja kasir!", "Error", JOptionPane.ERROR_MESSAGE);
+//                e.printStackTrace();
+//            }
+//        }
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
@@ -351,7 +446,6 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
         new BarChartExample();
     }//GEN-LAST:event_lblForChartKeyReleased
-
 
     /**
      * @param args the command line arguments
@@ -422,6 +516,7 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelUtama;
+    private com.toedter.calendar.JYearChooser ambilTahun;
     private rojeru_san.complementos.RSButtonHover btnHome;
     private rojeru_san.complementos.RSButtonHover btnLogout1;
     private javax.swing.JPanel header;
@@ -442,6 +537,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel lblForChart;
+    private javax.swing.JPanel pesan1;
     private javax.swing.JPanel sidebar;
     private com.toedter.calendar.JDateChooser tglDari;
     private com.toedter.calendar.JDateChooser tglSampai;
@@ -545,6 +641,95 @@ public class Home extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void updateGrafik() {
+        Date dari11 = tglDari.getDate();
+        Date sampai11 = tglSampai.getDate();
+
+        // Validasi input tanggal
+        if (dari11 == null || sampai11 == null) {
+            tampilkanPesan("Pilih rentang tanggal terlebih dahulu.");
+            return;
+        }
+
+        // Format tanggal ke format SQL
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dariString = sdf.format(dari11);
+        String sampaiString = sdf.format(sampai11);
+
+        // Query untuk mendapatkan data grafik
+        String query =  "SELECT waktu_transaksi, "
+               + "SUM(total) AS total, "
+               + "SUM(jumlah) AS item_terjual, "
+               + "COUNT(ID) AS jumlah_transaksi "
+               + "FROM transaksi_detail "
+               + "WHERE waktu_transaksi BETWEEN ? AND ? "
+               + "GROUP BY waktu_transaksi "
+               + "ORDER BY waktu_transaksi";
+
+        try (Connection conn = Koneksi.Go(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, dariString);
+            pstmt.setString(2, sampaiString);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (!rs.isBeforeFirst()) {
+                    tampilkanPesan("Tidak ada data untuk ditampilkan pada rentang tanggal ini.");
+                    return;
+                }
+
+                // Buat dataset dan grafik
+                CategoryDataset dataset = createDataset(rs);
+                JFreeChart chart = ChartFactory.createBarChart(
+                        "Grafik Penjualan", // Judul grafik
+                        "Tanggal", // Label sumbu X
+                        "Jumlah", // Label sumbu Y
+                        dataset, // Dataset
+                        PlotOrientation.VERTICAL, // Orientasi grafik
+                        true, // Sertakan legenda
+                        true, // Tooltips
+                        false // URL
+                );
+
+                // Tampilkan grafik di panel
+                ChartPanel chartPanel = new ChartPanel(chart);
+                Dimension panelSize = lblForChart.getSize();
+                chartPanel.setPreferredSize(panelSize); // Sesuaikan ukuran grafik dengan ukuran panel
+
+                lblForChart.removeAll();
+                lblForChart.setLayout(new BorderLayout());
+                lblForChart.add(chartPanel, BorderLayout.CENTER);
+                lblForChart.revalidate();
+                lblForChart.repaint();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memuat grafik: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void tampilkanPesan(String pesanan) {
+        pesan1.removeAll();
+        JLabel label = new JLabel(pesanan, SwingConstants.CENTER);
+        pesan1.setLayout(new BorderLayout());
+        pesan1.add(label, BorderLayout.CENTER);
+        pesan1.revalidate();
+        pesan1.repaint();
+    }
+
+    private CategoryDataset createDataset(ResultSet rs) throws SQLException {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        while (rs.next()) {
+            String formattedDate = dateFormat.format(rs.getDate("tanggal"));
+            dataset.addValue(rs.getDouble("total_penjualan"), "Penjualan", formattedDate);
+            dataset.addValue(rs.getInt("jumlah_transaksi"), "Jumlah Transaksi", formattedDate);
+            dataset.addValue(rs.getInt("item_terjual"), "Item Terjual", formattedDate);
+        }
+
+        return dataset;
     }
 
 }
