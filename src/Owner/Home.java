@@ -3,6 +3,7 @@ package Owner;
 import UILogin.Koneksi;
 import UILogin.UserProfile;
 import UILogin.login;
+import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,12 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFrame;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
+import javax.swing.*;
+import java.sql.PreparedStatement;
 
 public class Home extends javax.swing.JFrame {
 
@@ -23,6 +30,8 @@ public class Home extends javax.swing.JFrame {
 
         //fullscreen
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+
     }
 
     public Home(UserProfile up) {
@@ -37,6 +46,8 @@ public class Home extends javax.swing.JFrame {
             System.out.println("UserProfile is null");
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,7 +79,7 @@ public class Home extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        lblForChart = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         tglDari = new com.toedter.calendar.JDateChooser();
         tglSampai = new com.toedter.calendar.JDateChooser();
@@ -252,25 +263,25 @@ public class Home extends javax.swing.JFrame {
 
         PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
-        jPanel2.setBackground(new java.awt.Color(153, 0, 51));
-        jPanel2.addKeyListener(new java.awt.event.KeyAdapter() {
+        lblForChart.setBackground(new java.awt.Color(153, 0, 51));
+        lblForChart.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jPanel2KeyReleased(evt);
+                lblForChartKeyReleased(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout lblForChartLayout = new javax.swing.GroupLayout(lblForChart);
+        lblForChart.setLayout(lblForChartLayout);
+        lblForChartLayout.setHorizontalGroup(
+            lblForChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 580, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        lblForChartLayout.setVerticalGroup(
+            lblForChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 220, Short.MAX_VALUE)
         );
 
-        PanelUtama.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 430, 580, 220));
+        PanelUtama.add(lblForChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 430, 580, 220));
 
         jLabel5.setText("Dari");
         PanelUtama.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
@@ -336,10 +347,11 @@ public class Home extends javax.swing.JFrame {
         getNamaProdukTerlaris();
     }//GEN-LAST:event_tglSampaiPropertyChange
 
-    private void jPanel2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyReleased
+    private void lblForChartKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblForChartKeyReleased
         // TODO add your handling code here:
         new BarChartExample();
-    }//GEN-LAST:event_jPanel2KeyReleased
+    }//GEN-LAST:event_lblForChartKeyReleased
+
 
     /**
      * @param args the command line arguments
@@ -425,11 +437,11 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelProdukTerlaris;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel lblForChart;
     private javax.swing.JPanel sidebar;
     private com.toedter.calendar.JDateChooser tglDari;
     private com.toedter.calendar.JDateChooser tglSampai;
@@ -534,4 +546,5 @@ public class Home extends javax.swing.JFrame {
             }
         }
     }
+
 }

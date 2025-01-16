@@ -44,7 +44,7 @@ public class DashAdm_Home extends javax.swing.JFrame {
             txtLevel.setText(u.getLevel());
         }
         updateTotalTransaksi();
-        updateTotalProduk();
+            updateTotalProduk();
         updateTotalUser();
 
 //        txtTextNama.setText(u.getFullname());

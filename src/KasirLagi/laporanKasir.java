@@ -7,12 +7,17 @@ package KasirLagi;
 import UILogin.UserProfile;
 import UILogin.Koneksi;
 import UILogin.logout;
+import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -28,6 +33,8 @@ public class laporanKasir extends javax.swing.JFrame {
     public laporanKasir() {
         initComponents();
     }
+    
+     
 
     public laporanKasir(UILogin.UserProfile up) {
         initComponents();
@@ -508,8 +515,6 @@ public class laporanKasir extends javax.swing.JFrame {
     private javax.swing.JLabel txtNamaProfile10000;
     // End of variables declaration//GEN-END:variables
 
-    public static void viewdataLaporan(String where) {
-
-    }
+    
 
 }
