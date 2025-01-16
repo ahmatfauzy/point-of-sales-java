@@ -93,7 +93,6 @@ public class inputKasir extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         btnHapus = new rojeru_san.complementos.RSButtonHover();
         btnCO = new rojeru_san.complementos.RSButtonHover();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -330,9 +329,6 @@ public class inputKasir extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnCO, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 610, 130, 40));
-
-        jLabel6.setText("jLabel6");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -685,7 +681,6 @@ public class inputKasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

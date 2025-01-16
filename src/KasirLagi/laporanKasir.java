@@ -10,6 +10,7 @@ import UILogin.logout;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 public class laporanKasir extends javax.swing.JFrame {
 
     UserProfile u;
+
     /**
      * Creates new form inputKasir
      */
@@ -42,6 +44,88 @@ public class laporanKasir extends javax.swing.JFrame {
 
     }
 
+    private void loadLaporanHarian(Date tglDariSQL, Date tglSampaiSQL) {
+        // Ambil tanggal dari tglDari dan tglSampai
+        java.util.Date dateDari = tglDari.getDate();
+        java.util.Date dateSampai = tglSampai.getDate();
+
+        if (dateDari == null || dateSampai == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Harap pilih tanggal awal dan akhir.");
+            return;
+        }
+
+        java.sql.Date sqlDateDari = new java.sql.Date(dateDari.getTime());
+        java.sql.Date sqlDateSampai = new java.sql.Date(dateSampai.getTime());
+
+        DefaultTableModel model = (DefaultTableModel) tblCartHarian.getModel();
+        model.setRowCount(0); // Hapus data lama
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = Koneksi.Go(); // Pastikan koneksi ini sesuai dengan implementasi Anda
+            stmt = conn.createStatement();
+            String query = "SELECT td.id, td.waktu_transaksi, a.fullname AS kasir, td.total " +
+               "FROM transaksi_detail td " +
+               "JOIN akun a ON td.kasir_id = a.id " +
+               "WHERE td.waktu_transaksi BETWEEN '" + sqlDateDari + "' AND '" + sqlDateSampai + "'";
+
+            rs = stmt.executeQuery(query);
+
+            int no = 1;
+            double totalHarga = 0;
+
+            while (rs.next()) {
+                Object[] row = new Object[]{
+                    no++,
+                    rs.getString("id"),
+                    rs.getDate("waktu_transaksi"),
+                    rs.getString("kasir"),
+                    rs.getInt("total")
+                };
+                model.addRow(row);
+                totalHarga += rs.getDouble("total");
+            }
+
+            lblTotalHarga.setText(String.format("Rp %.2f", totalHarga));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memuat data: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void updateLaporanHarian() {
+        java.util.Date dari = tglDari.getDate();
+        java.util.Date sampai = tglSampai.getDate();
+
+        if (dari != null && sampai != null) {
+            Date tglDariSQL = new Date(dari.getTime());
+            Date tglSampaiSQL = new Date(sampai.getTime());
+            loadLaporanHarian(tglDariSQL, tglSampaiSQL);
+        } else {
+            // Kosongkan tabel jika salah satu tanggal belum dipilih
+            DefaultTableModel model = (DefaultTableModel) tblCartHarian.getModel();
+            model.setRowCount(0);
+            lblTotalHarga.setText("Rp 0");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,27 +148,24 @@ public class laporanKasir extends javax.swing.JFrame {
         btnHome1 = new rojeru_san.complementos.RSButtonHover();
         btnHome2 = new rojeru_san.complementos.RSButtonHover();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCart1 = new javax.swing.JTable();
+        tblCartHarian = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lblTotalHarga = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        rSButtonHover1 = new rojeru_san.complementos.RSButtonHover();
         jSeparator1 = new javax.swing.JSeparator();
+        tglDari = new com.toedter.calendar.JDateChooser();
+        tglSampai = new com.toedter.calendar.JDateChooser();
         jPanel3 = new javax.swing.JPanel();
         jTextField3 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        rSButtonHover2 = new rojeru_san.complementos.RSButtonHover();
-        rSButtonHover3 = new rojeru_san.complementos.RSButtonHover();
         jSeparator2 = new javax.swing.JSeparator();
         jPanel4 = new javax.swing.JPanel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -170,8 +251,8 @@ public class laporanKasir extends javax.swing.JFrame {
 
         getContentPane().add(sidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 96, -1, 972));
 
-        tblCart1.setBackground(new java.awt.Color(204, 204, 204));
-        tblCart1.setModel(new javax.swing.table.DefaultTableModel(
+        tblCartHarian.setBackground(new java.awt.Color(204, 204, 204));
+        tblCartHarian.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -179,9 +260,9 @@ public class laporanKasir extends javax.swing.JFrame {
                 "NO", "ID", "Tanggal", "Kasir", "Total"
             }
         ));
-        jScrollPane1.setViewportView(tblCart1);
+        jScrollPane1.setViewportView(tblCartHarian);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 370, 1110, 280));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 1110, 280));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -220,76 +301,38 @@ public class laporanKasir extends javax.swing.JFrame {
         jLabel5.setToolTipText("");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(246, 96, 320, -1));
 
-        jTextField1.setText("25/11/2004");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Filter Laporan Keuangan");
-
-        jTextField2.setText("30/11/2004");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, -1, 28));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Sampai");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, 28));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Dari");
-
-        rSButtonHover1.setText("Tampilkan");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 55, -1, 28));
 
         jSeparator1.setForeground(new java.awt.Color(51, 102, 255));
+        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1470, 15));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel7)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rSButtonHover1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jLabel1))
-                .addContainerGap(1483, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 529, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rSButtonHover1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
-        );
+        tglDari.setDateFormatString("y-MM-dd");
+        tglDari.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tglDariPropertyChange(evt);
+            }
+        });
+        jPanel2.add(tglDari, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 207, 40));
+
+        tglSampai.setDateFormatString("y-MM-dd");
+        tglSampai.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tglSampaiPropertyChange(evt);
+            }
+        });
+        jPanel2.add(tglSampai, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 207, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(246, 146, -1, -1));
 
@@ -325,18 +368,6 @@ public class laporanKasir extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(2180, 310, -1, -1));
 
-        rSButtonHover2.setText("Print");
-        getContentPane().add(rSButtonHover2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 310, 106, -1));
-
-        rSButtonHover3.setBackground(new java.awt.Color(0, 204, 0));
-        rSButtonHover3.setText("Cetak PDF");
-        rSButtonHover3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rSButtonHover3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(rSButtonHover3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 310, 106, -1));
-
         jSeparator2.setForeground(new java.awt.Color(51, 102, 255));
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1058, 146, 1470, -1));
 
@@ -371,6 +402,10 @@ public class laporanKasir extends javax.swing.JFrame {
 
     private void btnHome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome1ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        KasirLagi.homeKasir l = new KasirLagi.homeKasir(u);
+        l.setVisible(true);
+        l.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_btnHome1ActionPerformed
 
     private void btnHome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome2ActionPerformed
@@ -381,14 +416,6 @@ public class laporanKasir extends javax.swing.JFrame {
         l.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_btnHome2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
@@ -397,9 +424,17 @@ public class laporanKasir extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void rSButtonHover3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonHover3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rSButtonHover3ActionPerformed
+    private void tglDariPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tglDariPropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateLaporanHarian();
+        }
+    }//GEN-LAST:event_tglDariPropertyChange
+
+    private void tglSampaiPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tglSampaiPropertyChange
+        if ("date".equals(evt.getPropertyName())) { // Pastikan hanya dijalankan saat properti "date" berubah
+            updateLaporanHarian();
+        }
+    }//GEN-LAST:event_tglSampaiPropertyChange
 
     /**
      * @param args the command line arguments
@@ -462,45 +497,19 @@ public class laporanKasir extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel lblTotalHarga;
-    private rojeru_san.complementos.RSButtonHover rSButtonHover1;
-    private rojeru_san.complementos.RSButtonHover rSButtonHover2;
-    private rojeru_san.complementos.RSButtonHover rSButtonHover3;
     private javax.swing.JPanel sidebar;
-    private static javax.swing.JTable tblCart1;
+    private static javax.swing.JTable tblCartHarian;
+    private com.toedter.calendar.JDateChooser tglDari;
+    private com.toedter.calendar.JDateChooser tglSampai;
     private javax.swing.JLabel txtLevel10000;
     private javax.swing.JLabel txtNamaProfile10000;
     // End of variables declaration//GEN-END:variables
 
     public static void viewdataLaporan(String where) {
-        try {
-            DefaultTableModel m = (DefaultTableModel) tblCart1.getModel();
-            m.getDataVector().removeAllElements();
-            Connection K = Koneksi.Go();
-            Statement S = K.createStatement();
-            String Q = "SELECT * FROM akun " + where;
-            ResultSet R = S.executeQuery(Q);
-            int n = 1;
-            while (R.next()) {
-                int id = R.getInt("id");
-                String fullname = R.getString("fullname");
-                String username = R.getString("username");
-                String password = R.getString("password");
-                String level = R.getString("level");
-                Object[] data = {id, n, fullname, username, password, level};
-                m.addRow(data);
-                n++;
-            }
 
-            tblCart1.getColumnModel().getColumn(0).setMinWidth(0);
-            tblCart1.getColumnModel().getColumn(0).setMaxWidth(0);
-//            
-        } catch (Exception e) {
-            //error handling
-        }
     }
+
 }

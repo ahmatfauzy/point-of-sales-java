@@ -54,7 +54,7 @@ public class homeKasir extends javax.swing.JFrame {
         txtLevel10000 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         sidebar = new javax.swing.JPanel();
-        btnHome = new rojeru_san.complementos.RSButtonHover();
+        btnLaporanHarian = new rojeru_san.complementos.RSButtonHover();
         btnLogout1 = new rojeru_san.complementos.RSButtonHover();
         btnHome1 = new rojeru_san.complementos.RSButtonHover();
         btnHome2 = new rojeru_san.complementos.RSButtonHover();
@@ -116,15 +116,15 @@ public class homeKasir extends javax.swing.JFrame {
         sidebar.setBackground(new java.awt.Color(51, 51, 51));
         sidebar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnHome.setBackground(new java.awt.Color(51, 51, 51));
-        btnHome.setText("Laporan Harian");
-        btnHome.setColorHover(new java.awt.Color(102, 102, 102));
-        btnHome.addActionListener(new java.awt.event.ActionListener() {
+        btnLaporanHarian.setBackground(new java.awt.Color(51, 51, 51));
+        btnLaporanHarian.setText("Laporan Harian");
+        btnLaporanHarian.setColorHover(new java.awt.Color(102, 102, 102));
+        btnLaporanHarian.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHomeActionPerformed(evt);
+                btnLaporanHarianActionPerformed(evt);
             }
         });
-        sidebar.add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 220, 50));
+        sidebar.add(btnLaporanHarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 220, 50));
 
         btnLogout1.setBackground(new java.awt.Color(255, 51, 51));
         btnLogout1.setText("LOGOUT");
@@ -350,9 +350,13 @@ public class homeKasir extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+    private void btnLaporanHarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaporanHarianActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHomeActionPerformed
+        this.setVisible(false);
+        KasirLagi.laporanKasir l = new KasirLagi.laporanKasir(u);
+        l.setVisible(true);
+        l.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_btnLaporanHarianActionPerformed
 
     private void btnLogout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogout1ActionPerformed
         logout.Logout(this);
@@ -409,9 +413,9 @@ public class homeKasir extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private rojeru_san.complementos.RSButtonHover btnHome;
     private rojeru_san.complementos.RSButtonHover btnHome1;
     private rojeru_san.complementos.RSButtonHover btnHome2;
+    private rojeru_san.complementos.RSButtonHover btnLaporanHarian;
     private rojeru_san.complementos.RSButtonHover btnLogout1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;

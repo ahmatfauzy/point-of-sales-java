@@ -263,14 +263,14 @@ public class Home extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 160, Short.MAX_VALUE)
+            .addGap(0, 220, Short.MAX_VALUE)
         );
 
-        PanelUtama.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 410, 260, 160));
+        PanelUtama.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 430, 580, 220));
 
         jLabel5.setText("Dari");
         PanelUtama.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
