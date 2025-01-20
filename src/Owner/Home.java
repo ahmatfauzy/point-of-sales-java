@@ -48,7 +48,6 @@ public class Home extends javax.swing.JFrame {
         } else {
             System.out.println("UserProfile is null");
         }
-        updateGrafik();
     }
 
     /**
@@ -81,12 +80,10 @@ public class Home extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        lblForChart = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         tglDari = new com.toedter.calendar.JDateChooser();
         tglSampai = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
-        ambilTahun = new com.toedter.calendar.JYearChooser();
         pesan1 = new javax.swing.JPanel();
 
         jMenu1.setText("jMenu1");
@@ -267,26 +264,6 @@ public class Home extends javax.swing.JFrame {
 
         PanelUtama.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
-        lblForChart.setBackground(new java.awt.Color(255, 255, 255));
-        lblForChart.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                lblForChartKeyReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout lblForChartLayout = new javax.swing.GroupLayout(lblForChart);
-        lblForChart.setLayout(lblForChartLayout);
-        lblForChartLayout.setHorizontalGroup(
-            lblForChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
-        );
-        lblForChartLayout.setVerticalGroup(
-            lblForChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
-
-        PanelUtama.add(lblForChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 440, 580, 220));
-
         jLabel5.setText("Dari");
         PanelUtama.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
 
@@ -308,7 +285,6 @@ public class Home extends javax.swing.JFrame {
 
         jLabel6.setText("Sampai");
         PanelUtama.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 110, -1, -1));
-        PanelUtama.add(ambilTahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 140, 110, -1));
 
         javax.swing.GroupLayout pesan1Layout = new javax.swing.GroupLayout(pesan1);
         pesan1.setLayout(pesan1Layout);
@@ -342,7 +318,7 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-//    private void btnLoadChartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadChartActionPerformed
+//    private void btnLoadChartActionPerformed(java.awt.event.ActionEvent evt) {                                             
 //            // TODO add your handling code here:
 //           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //
@@ -442,11 +418,6 @@ public class Home extends javax.swing.JFrame {
         getNamaProdukTerlaris();
     }//GEN-LAST:event_tglSampaiPropertyChange
 
-    private void lblForChartKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblForChartKeyReleased
-        // TODO add your handling code here:
-        new BarChartExample();
-    }//GEN-LAST:event_lblForChartKeyReleased
-
     /**
      * @param args the command line arguments
      */
@@ -516,7 +487,6 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelUtama;
-    private com.toedter.calendar.JYearChooser ambilTahun;
     private rojeru_san.complementos.RSButtonHover btnHome;
     private rojeru_san.complementos.RSButtonHover btnLogout1;
     private javax.swing.JPanel header;
@@ -536,7 +506,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JPanel lblForChart;
     private javax.swing.JPanel pesan1;
     private javax.swing.JPanel sidebar;
     private com.toedter.calendar.JDateChooser tglDari;
@@ -642,94 +611,94 @@ public class Home extends javax.swing.JFrame {
             }
         }
     }
-
-    private void updateGrafik() {
-        Date dari11 = tglDari.getDate();
-        Date sampai11 = tglSampai.getDate();
-
-        // Validasi input tanggal
-        if (dari11 == null || sampai11 == null) {
-            tampilkanPesan("Pilih rentang tanggal terlebih dahulu.");
-            return;
-        }
-
-        // Format tanggal ke format SQL
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dariString = sdf.format(dari11);
-        String sampaiString = sdf.format(sampai11);
-
-        // Query untuk mendapatkan data grafik
-        String query =  "SELECT waktu_transaksi, "
-               + "SUM(total) AS total, "
-               + "SUM(jumlah) AS item_terjual, "
-               + "COUNT(ID) AS jumlah_transaksi "
-               + "FROM transaksi_detail "
-               + "WHERE waktu_transaksi BETWEEN ? AND ? "
-               + "GROUP BY waktu_transaksi "
-               + "ORDER BY waktu_transaksi";
-
-        try (Connection conn = Koneksi.Go(); PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, dariString);
-            pstmt.setString(2, sampaiString);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (!rs.isBeforeFirst()) {
-                    tampilkanPesan("Tidak ada data untuk ditampilkan pada rentang tanggal ini.");
-                    return;
-                }
-
-                // Buat dataset dan grafik
-                CategoryDataset dataset = createDataset(rs);
-                JFreeChart chart = ChartFactory.createBarChart(
-                        "Grafik Penjualan", // Judul grafik
-                        "Tanggal", // Label sumbu X
-                        "Jumlah", // Label sumbu Y
-                        dataset, // Dataset
-                        PlotOrientation.VERTICAL, // Orientasi grafik
-                        true, // Sertakan legenda
-                        true, // Tooltips
-                        false // URL
-                );
-
-                // Tampilkan grafik di panel
-                ChartPanel chartPanel = new ChartPanel(chart);
-                Dimension panelSize = lblForChart.getSize();
-                chartPanel.setPreferredSize(panelSize); // Sesuaikan ukuran grafik dengan ukuran panel
-
-                lblForChart.removeAll();
-                lblForChart.setLayout(new BorderLayout());
-                lblForChart.add(chartPanel, BorderLayout.CENTER);
-                lblForChart.revalidate();
-                lblForChart.repaint();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memuat grafik: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void tampilkanPesan(String pesanan) {
-        pesan1.removeAll();
-        JLabel label = new JLabel(pesanan, SwingConstants.CENTER);
-        pesan1.setLayout(new BorderLayout());
-        pesan1.add(label, BorderLayout.CENTER);
-        pesan1.revalidate();
-        pesan1.repaint();
-    }
-
-    private CategoryDataset createDataset(ResultSet rs) throws SQLException {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        while (rs.next()) {
-            String formattedDate = dateFormat.format(rs.getDate("tanggal"));
-            dataset.addValue(rs.getDouble("total_penjualan"), "Penjualan", formattedDate);
-            dataset.addValue(rs.getInt("jumlah_transaksi"), "Jumlah Transaksi", formattedDate);
-            dataset.addValue(rs.getInt("item_terjual"), "Item Terjual", formattedDate);
-        }
-
-        return dataset;
-    }
+//
+//    private void updateGrafik() {
+//        Date dari11 = tglDari.getDate();
+//        Date sampai11 = tglSampai.getDate();
+//
+//        // Validasi input tanggal
+//        if (dari11 == null || sampai11 == null) {
+//            tampilkanPesan("Pilih rentang tanggal terlebih dahulu.");
+//            return;
+//        }
+//
+//        // Format tanggal ke format SQL
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        String dariString = sdf.format(dari11);
+//        String sampaiString = sdf.format(sampai11);
+//
+//        // Query untuk mendapatkan data grafik
+//        String query =  "SELECT waktu_transaksi, "
+//               + "SUM(total) AS total, "
+//               + "SUM(jumlah) AS item_terjual, "
+//               + "COUNT(ID) AS jumlah_transaksi "
+//               + "FROM transaksi_detail "
+//               + "WHERE waktu_transaksi BETWEEN ? AND ? "
+//               + "GROUP BY waktu_transaksi "
+//               + "ORDER BY waktu_transaksi";
+//
+//        try (Connection conn = Koneksi.Go(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+//            pstmt.setString(1, dariString);
+//            pstmt.setString(2, sampaiString);
+//
+//            try (ResultSet rs = pstmt.executeQuery()) {
+//                if (!rs.isBeforeFirst()) {
+//                    tampilkanPesan("Tidak ada data untuk ditampilkan pada rentang tanggal ini.");
+//                    return;
+//                }
+//
+//                // Buat dataset dan grafik
+//                CategoryDataset dataset = createDataset(rs);
+//                JFreeChart chart = ChartFactory.createBarChart(
+//                        "Grafik Penjualan", // Judul grafik
+//                        "Tanggal", // Label sumbu X
+//                        "Jumlah", // Label sumbu Y
+//                        dataset, // Dataset
+//                        PlotOrientation.VERTICAL, // Orientasi grafik
+//                        true, // Sertakan legenda
+//                        true, // Tooltips
+//                        false // URL
+//                );
+//
+//                // Tampilkan grafik di panel
+//                ChartPanel chartPanel = new ChartPanel(chart);
+//                Dimension panelSize = lblForChart.getSize();
+//                chartPanel.setPreferredSize(panelSize); // Sesuaikan ukuran grafik dengan ukuran panel
+//
+//                lblForChart.removeAll();
+//                lblForChart.setLayout(new BorderLayout());
+//                lblForChart.add(chartPanel, BorderLayout.CENTER);
+//                lblForChart.revalidate();
+//                lblForChart.repaint();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memuat grafik: " + e.getMessage(),
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    private void tampilkanPesan(String pesanan) {
+//        pesan1.removeAll();
+//        JLabel label = new JLabel(pesanan, SwingConstants.CENTER);
+//        pesan1.setLayout(new BorderLayout());
+//        pesan1.add(label, BorderLayout.CENTER);
+//        pesan1.revalidate();
+//        pesan1.repaint();
+//    }
+//
+//    private CategoryDataset createDataset(ResultSet rs) throws SQLException {
+//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//
+//        while (rs.next()) {
+//            String formattedDate = dateFormat.format(rs.getDate("tanggal"));
+//            dataset.addValue(rs.getDouble("total_penjualan"), "Penjualan", formattedDate);
+//            dataset.addValue(rs.getInt("jumlah_transaksi"), "Jumlah Transaksi", formattedDate);
+//            dataset.addValue(rs.getInt("item_terjual"), "Item Terjual", formattedDate);
+//        }
+//
+//        return dataset;
+//    }
 
 }

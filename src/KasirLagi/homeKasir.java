@@ -80,6 +80,7 @@ public class homeKasir extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabelProdukTerlaris = new javax.swing.JLabel();
+        jPanelGrafik = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -280,6 +281,19 @@ public class homeKasir extends javax.swing.JFrame {
 
         getContentPane().add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 120, -1, 130));
 
+        javax.swing.GroupLayout jPanelGrafikLayout = new javax.swing.GroupLayout(jPanelGrafik);
+        jPanelGrafik.setLayout(jPanelGrafikLayout);
+        jPanelGrafikLayout.setHorizontalGroup(
+            jPanelGrafikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 530, Short.MAX_VALUE)
+        );
+        jPanelGrafikLayout.setVerticalGroup(
+            jPanelGrafikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(jPanelGrafik, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, 530, 150));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -360,6 +374,7 @@ public class homeKasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelProdukTerlaris;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanelGrafik;
     private javax.swing.JPanel pnlProduk;
     private javax.swing.JPanel pnlTransaksi;
     private javax.swing.JPanel sidebar;
@@ -430,43 +445,44 @@ public class homeKasir extends javax.swing.JFrame {
     }
 
     private void getNamaProdukTerlaris() {
-    try {
-        // Koneksi ke database
-        Connection conn = Koneksi.Go();
+        try {
+            // Koneksi ke database
+            Connection conn = Koneksi.Go();
 
-        // Query SQL untuk mendapatkan produk terlaris
-        String query = "SELECT "
-                + "    p.nama_produk "
-                + "FROM "
-                + "    transaksi_detail td "
-                + "JOIN "
-                + "    produk p ON td.produk_detail_id = p.id "
-                + "GROUP BY "
-                + "    p.nama_produk "
-                + "ORDER BY "
-                + "    SUM(td.jumlah) DESC "
-                + "LIMIT 1";
-        PreparedStatement stmt = conn.prepareStatement(query);
+            // Query SQL untuk mendapatkan produk terlaris
+            String query = "SELECT "
+                    + "    p.nama_produk "
+                    + "FROM "
+                    + "    transaksi_detail td "
+                    + "JOIN "
+                    + "    produk p ON td.produk_detail_id = p.id "
+                    + "GROUP BY "
+                    + "    p.nama_produk "
+                    + "ORDER BY "
+                    + "    SUM(td.jumlah) DESC "
+                    + "LIMIT 1";
+            PreparedStatement stmt = conn.prepareStatement(query);
 
-        // Eksekusi query
-        ResultSet rs = stmt.executeQuery();
+            // Eksekusi query
+            ResultSet rs = stmt.executeQuery();
 
-        // Update JLabel dengan hasil query
-        if (rs.next()) {
-            String produkTerlaris = rs.getString("nama_produk");
-            jLabelProdukTerlaris.setText(produkTerlaris);
-        } else {
-            jLabelProdukTerlaris.setText("Tidak ada data.");
+            // Update JLabel dengan hasil query
+            if (rs.next()) {
+                String produkTerlaris = rs.getString("nama_produk");
+                jLabelProdukTerlaris.setText(produkTerlaris);
+            } else {
+                jLabelProdukTerlaris.setText("Tidak ada data.");
+            }
+
+            // Tutup koneksi dan sumber daya
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            jLabelProdukTerlaris.setText("Error");
         }
-
-        // Tutup koneksi dan sumber daya
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-        jLabelProdukTerlaris.setText("Error");
     }
-}
+    
 
 }

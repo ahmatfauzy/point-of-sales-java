@@ -32,6 +32,10 @@ public class laporanKasir extends javax.swing.JFrame {
      */
     public laporanKasir() {
         initComponents();
+        
+        
+        tblCartHarian.getColumnModel().getColumn(1).setMinWidth(0);
+        tblCartHarian.getColumnModel().getColumn(1).setMaxWidth(0);
     }
     
      
@@ -48,6 +52,9 @@ public class laporanKasir extends javax.swing.JFrame {
         } else {
             System.out.println("UserProfile is null");
         }
+        
+        tblCartHarian.getColumnModel().getColumn(1).setMinWidth(0);
+        tblCartHarian.getColumnModel().getColumn(1).setMaxWidth(0);
 
     }
 
@@ -116,11 +123,16 @@ public class laporanKasir extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
+        
+        tblCartHarian.getColumnModel().getColumn(1).setMinWidth(0);
+        tblCartHarian.getColumnModel().getColumn(1).setMaxWidth(0);
     }
 
     private void updateLaporanHarian() {
         java.util.Date dari = tglDari.getDate();
         java.util.Date sampai = tglSampai.getDate();
+        
+        
 
         if (dari != null && sampai != null) {
             Date tglDariSQL = new Date(dari.getTime());
@@ -132,6 +144,9 @@ public class laporanKasir extends javax.swing.JFrame {
             model.setRowCount(0);
             lblTotalHarga.setText("Rp 0");
         }
+        
+        tblCartHarian.getColumnModel().getColumn(1).setMinWidth(0);
+        tblCartHarian.getColumnModel().getColumn(1).setMaxWidth(0);
     }
 
     /**
